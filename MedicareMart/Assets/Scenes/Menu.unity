@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000013351, y: -0.0013824}
-  m_SizeDelta: {x: 1920, y: 491.16}
+  m_AnchoredPosition: {x: 0.000013351, y: 0.00031281}
+  m_SizeDelta: {x: 1920, y: 560.28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &33718916
 MonoBehaviour:
@@ -280,7 +280,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 129054550}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1128380642}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: ButtonHandlerPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &129054550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,7 +510,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000020027, y: 167}
+  m_AnchoredPosition: {x: 23, y: 171}
   m_SizeDelta: {x: 700.0859, y: 93.3264}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1025214015
@@ -514,7 +526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3713955, g: 0.735849, b: 0.3842416, a: 1}
+  m_Color: {r: 0.5424528, g: 1, b: 0.57593244, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -556,7 +568,7 @@ GameObject:
   - component: {fileID: 1073448970}
   - component: {fileID: 1073448969}
   m_Layer: 5
-  m_Name: 'OptionButton '
+  m_Name: 'SettingButton '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -625,7 +637,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1073448970}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1128380642}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: ButtonHandlerSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1073448970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -676,6 +700,7 @@ GameObject:
   - component: {fileID: 1128380640}
   - component: {fileID: 1128380639}
   - component: {fileID: 1128380638}
+  - component: {fileID: 1128380642}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -768,6 +793,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1128380642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1128380637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c58e541ae439c743b2bcf42e5e02dbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1148337576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,7 +1051,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1503373107}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1128380642}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: ButtonHandlerQuit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1503373107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1216,9 +1265,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Options
-
-'
+  m_Text: Settings
 --- !u!222 &1803347473
 CanvasRenderer:
   m_ObjectHideFlags: 0
