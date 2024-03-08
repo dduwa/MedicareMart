@@ -56,6 +56,7 @@ public class MainMenuController : MonoBehaviour
 
     public void ButtonHandlerSettings()
     {
+ 
         SceneManager.LoadSceneAsync("Settings");
     }
 }
