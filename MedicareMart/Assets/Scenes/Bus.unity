@@ -3214,13 +3214,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 945726330}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.02841, y: 0.0036, z: 0.00129}
-  m_LocalScale: {x: -0.010859366, y: 0.021749958, z: -0.027464256}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 0.0428, y: 0.0036, z: -0.0014}
+  m_LocalScale: {x: -0.008611585, y: 0.017247934, z: -0.023519605}
   m_Children: []
   m_Father: {fileID: 5753886232495870024}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &945726332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4015,6 +4015,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_Name
       value: FPSController
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5e9e851c0e142814dac026a256ba2ac0, type: 3}
       propertyPath: m_RootOrder
@@ -6276,6 +6280,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ec5cf00ca181d45a42ba1870e148c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &1877780885
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877780878}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1879621980
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8936,7 +8954,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6610809141173049458}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -57.593, y: 2.43, z: -4.59}
+  m_LocalPosition: {x: -57.593, y: 1.89, z: -4.59}
   m_LocalScale: {x: 117.649994, y: 117.649994, z: 117.649994}
   m_Children:
   - {fileID: 9199941675540752186}
@@ -9158,6 +9176,7 @@ GameObject:
   - component: {fileID: 6610809141173049460}
   - component: {fileID: 6610809141173049459}
   - component: {fileID: 6610809141173049461}
+  - component: {fileID: 6610809141173049462}
   m_Layer: 0
   m_Name: Bus
   m_TagString: Untagged
@@ -9296,6 +9315,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6610809141173049462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6610809141173049458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0698663587b4aba4f8909b274cac94b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!33 &6671169132821931523
 MeshFilter:
   m_ObjectHideFlags: 0

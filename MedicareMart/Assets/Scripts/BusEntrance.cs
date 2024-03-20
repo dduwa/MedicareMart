@@ -9,9 +9,13 @@ public class BusEntrance : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log("Trigger Entered");
         if (other.tag == "Player")
         {
-            busMovement.CloseDoor();
+            busMovement.PlayerEntered();
+// Debug.Log("Player has entered the trigger zone.");
+
+
         }
     }
     

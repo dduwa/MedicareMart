@@ -8,47 +8,53 @@ public class BusMovement : MonoBehaviour
     public Transform[] waypoints; // Assign the waypoints in the inspector
     public float speed = 5f;
     private int waypointIndex = 0;
-
-    private bool isMoving = true;   
-
     public DoorController doorController;
+    
+    private bool playerEntered = false; // This should be set to true by another script when the player enters a specific trigger
 
-    // Update is called once per frame
     void Update()
     {
         MoveBus();
     }
 
-    void MoveBus()
+      public void PlayerEntered()
     {
-        if (waypointIndex <= waypoints.Length - 1)
-        {
-            var targetPosition = waypoints[waypointIndex].position;
-            var moveDelta = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveDelta);
+         Debug.Log("PlayerEntered method called"); // Ensure this is called
 
-            if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
-            {
-                isMoving = true;
-            }
-            else if (isMoving && waypointIndex == waypoints.Length - 1)
-            {
-                isMoving = false;
-                doorController.OpenDoor();
-            }
-        }
-
-        if (Vector3.Distance(transform.position, waypoints[waypointIndex].position) < 0.1f)
-        {
-            waypointIndex++;
-        }
+        playerEntered = true;
     }
 
-    // This method can be called by another script, or an event, when the FPS enters the bus
+    void MoveBus()
+    {
+        if (waypointIndex < waypoints.Length)
+        {
+            Transform targetWaypoint = waypoints[waypointIndex];
+            transform.position = Vector3.MoveTowards(transform.position, targetWaypoint.position, speed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
+            {
+                if (waypointIndex == waypoints.Length - 1)
+                {
+                    doorController.OpenDoor(); // Open the door at the last waypoint
+                    // Check if player has already entered the trigger and close the door if true
+                    //Debug.Log("Player has entered");
+                    if (playerEntered)
+                    {
+                       // Debug.Log("Player has entered the trigger zone.2");
+                        CloseDoor();
+                    }
+                }
+                else
+                {
+                    waypointIndex++;
+                }
+            }
+        }
+    }
+  
+
     public void CloseDoor()
     {
         doorController.CloseDoor();
     }
-
-
 }
