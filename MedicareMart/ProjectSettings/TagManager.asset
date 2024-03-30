@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - BusSeat
+  - BusCam
   layers:
   - Default
   - TransparentFX

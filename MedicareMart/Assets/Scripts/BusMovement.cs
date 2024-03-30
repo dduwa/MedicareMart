@@ -12,6 +12,17 @@ public class BusMovement : MonoBehaviour
     
     private bool playerEntered = false; // This should be set to true by another script when the player enters a specific trigger
 
+    public Camera busCam; // Reference to the BusCam camera
+
+    void Start()
+    {
+        CutsceneController.Instance.StartCutscene(1); // Start the first cutscene
+
+         // Parent the BusCam to this bus GameObject
+        busCam.transform.SetParent(transform, false);
+        busCam.transform.localPosition = Vector3.zero; // Set the local position to zero to keep the camera at the pivot point of the bus
+        busCam.transform.localRotation = Quaternion.identity; // Optionally, reset the local rotation if needed
+    }
     void Update()
     {
         MoveBus();
@@ -46,7 +57,7 @@ public class BusMovement : MonoBehaviour
                 }
                 else
                 {
-                    waypointIndex++;
+                     waypointIndex++;
                 }
             }
         }

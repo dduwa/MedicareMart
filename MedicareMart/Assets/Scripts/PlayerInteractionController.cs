@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -11,9 +12,12 @@ public class PlayerInteractionController : MonoBehaviour {
 	public GraphicRaycaster graphicRaycaster;
 	public FirstPersonController firstPersonController;
 
+
 	  // Add these fields to adjust the camera's FOV
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private float sittingFOV = 60f; // FOV value when sitting
+	[SerializeField] private Camera busCam; // Reference to the BusCam camera
+
+  //  [SerializeField] private float sittingFOV = 60f; // FOV value when sitting
     private float originalFOV; // To store the original FOV value
 
 	void Awake ()
@@ -111,14 +115,18 @@ void PhysicsRaycasts()
 		transform.rotation = desiredRotation;
 		// Disable player movement here
 		firstPersonController.enabled = false;
+		
+		playerCamera.transform.position = new Vector3(-60.58f, 3.21f, -3.18f);
+    	playerCamera.transform.rotation = Quaternion.Euler(-0.996f, -271.635f, 0.006f);
+		
+		// Start the second cutscene after a delay
+		StartCoroutine(BeginCutsceneAfterDelay(2));
+	}
 
-		// Optionally, adjust the player's camera or FOV to simulate sitting down
-		playerCamera.fieldOfView = sittingFOV;
-
-
-
-		// Optionally, play a sound effect or animation to simulate sitting down
-
+	IEnumerator BeginCutsceneAfterDelay(float delay)
+	{
+		yield return new WaitForSeconds(delay);
+		CutsceneController.Instance.StartCutscene(2); // Assuming CutsceneController is a singleton
 	}
 
 	void CheckForSitDownOrStandUpInput()
