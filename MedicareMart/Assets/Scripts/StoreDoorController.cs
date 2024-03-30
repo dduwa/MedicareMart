@@ -40,7 +40,7 @@ public class StoreDoorController : MonoBehaviour
     {
         if (isOpen)
         {
-            Invoke("CloseDoor", 10f); // Wait for 2 seconds before closing
+            Invoke("CloseDoor", 2f); // Wait for 2 seconds before closing
         }
     }
 
