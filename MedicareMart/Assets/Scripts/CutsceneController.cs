@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement; // Required for loading scenes
+using UnityEngine.SceneManagement; 
 
 public class CutsceneController : MonoBehaviour
 {
@@ -17,7 +17,7 @@ public class CutsceneController : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional, based on your needs
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
@@ -59,7 +59,7 @@ public class CutsceneController : MonoBehaviour
         yield return fadeTween.WaitForCompletion();
 
         // After fading to black, load the next scene
-        LoadNextScene("Store"); // Replace "Store" with your actual next scene name
+        LoadNextScene("Store"); 
     }
 
     void ToggleCrosshair(bool isActive)

@@ -48,7 +48,7 @@ void PhysicsRaycasts()
     RaycastHit hit;
 
     // Perform the raycast first
-    if (Physics.Raycast(centreOfScreenRay, out hit, distanceToFireRay, ~LayerMask.GetMask("SeeThrough"))) 
+    if (Physics.Raycast(centreOfScreenRay, out hit, distanceToFireRay)) 
     {
         // Now that we've confirmed a hit, we can safely access hit.transform
         if (hit.transform.CompareTag("BusSeat"))

@@ -41,21 +41,22 @@ void PhysicsRaycasts()
     Ray centreOfScreenRay = Camera.main.ScreenPointToRay(centreOfScreen);
     RaycastHit hit;
 
-    // Perform the raycast first
-    if (Physics.Raycast(centreOfScreenRay, out hit, distanceToFireRay, ~LayerMask.GetMask("SeeThrough"))) 
+ if (Physics.Raycast(centreOfScreenRay, out hit, distanceToFireRay, ~LayerMask.GetMask("SeeThrough"))) 
     {
-        // Now that we've confirmed a hit, we can safely access hit.transform
-        if (hit.transform.CompareTag("BusSeat"))
+        InteractiveObjectBase interactableObject = hit.transform.GetComponent<InteractiveObjectBase>();
+        
+        if (interactableObject != null)
         {
-            ToggleSelectedCursor(true); // Show that the seat is interactable
-           
+            ToggleSelectedCursor(true); // Show that the object is interactable
+            
+            if (Input.GetKeyDown(KeyCode.E)) // Check for 'E' key to interact
+            {
+                interactableObject.Interact(); // Call the interact function on the object
+            }
         }
         else
         {
-            // Check if hit object is an interactable object
-            InteractiveObjectBase iob = hit.transform.GetComponent<InteractiveObjectBase>();
-            ToggleSelectedCursor(iob != null);
-            
+            ToggleSelectedCursor(false);
         }
     }
     else
