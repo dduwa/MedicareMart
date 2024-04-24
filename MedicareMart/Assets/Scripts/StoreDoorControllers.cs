@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoreDoorControllers : InteractiveObjectBase   // Change the class name to StoreDoorControllers
+public class StoreDoorControllers : MonoBehaviour, InteractiveObjectBase   
 {
-    Animator animator;
-    bool isOpen = false;
+    public Transform sitPosition { get; private set; }  
+
+    private Animator animator;
+    private bool isOpen = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        sitPosition = transform;  
     }
 
-    public override void Interact()
+    public void Interact()  
     {
         if (isOpen)
         {

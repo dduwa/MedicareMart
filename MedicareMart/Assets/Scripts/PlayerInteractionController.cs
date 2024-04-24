@@ -66,7 +66,7 @@ void PhysicsRaycasts()
             ToggleSelectedCursor(iob != null);
             if (iob != null && Input.GetMouseButtonDown(0))
             {
-                iob.OnInteraction();
+                iob.Interact();
             }
         }
     }
