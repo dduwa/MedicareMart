@@ -10,7 +10,7 @@ Material:
   m_Name: EmissiveGreen
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION
-  m_LightmapFlags: 0
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -75,5 +75,5 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.03137255, g: 0.03529412, b: 0.03529412, a: 1}
-    - _EmissionColor: {r: 0.3372549, g: 1.5215687, b: 0.21960784, a: 1}
+    - _EmissionColor: {r: 0.425774, g: 1.8856263, b: 0.2739494, a: 1}
   m_BuildTextureStacks: []
