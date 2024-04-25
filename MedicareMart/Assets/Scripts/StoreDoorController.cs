@@ -5,13 +5,13 @@ using UnityEngine;
 public class StoreDoorController : MonoBehaviour
 {
  public Animator doorAnimator;
-    private AudioSource audioSource; // Reference to the AudioSource component
+    private AudioSource audioSource; 
     private bool isOpen = false;
 
     void Start()
     {
         doorAnimator.SetBool("isOpen", false); // Set the initial state of the door to closed
-        // Attempt to get the AudioSource component on the same GameObject
+
         audioSource = GetComponent<AudioSource>();
 
         // If the AudioSource is not found, log an error
@@ -48,6 +48,5 @@ public class StoreDoorController : MonoBehaviour
     {
         doorAnimator.Play("DoorClose");
         isOpen = false;
-        // Optionally play a closing sound here if you have one
     }
 }

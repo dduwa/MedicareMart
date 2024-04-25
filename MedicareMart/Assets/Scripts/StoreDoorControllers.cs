@@ -2,29 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoreDoorControllers : MonoBehaviour, InteractiveObjectBase   
+public class StoreDoorControllers : MonoBehaviour
 {
-    public Transform sitPosition { get; private set; }  
-
-    private Animator animator;
-    private bool isOpen = false;
+    public Animator animator;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
-        sitPosition = transform;  
+        animator = GetComponentInParent<Animator>();
+        if (animator == null) Debug.LogError("Animator not found on the door!");
     }
 
-    public void Interact()  
+    public void ToggleDoor()
     {
-        if (isOpen)
-        {
-            animator.SetTrigger("Close");
-        }
-        else
-        {
-            animator.SetTrigger("Open");
-        }
-        isOpen = !isOpen;
+        bool isOpen = animator.GetBool("IsOpen");
+        animator.SetBool("IsOpen", !isOpen);
     }
+
 }
