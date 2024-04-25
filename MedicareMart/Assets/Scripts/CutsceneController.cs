@@ -12,6 +12,15 @@ public class CutsceneController : MonoBehaviour
 
     public Camera busCam;
 
+    void Start()
+    {
+        if (imageToFade != null)
+        {
+            imageToFade.color = new Color(imageToFade.color.r, imageToFade.color.g, imageToFade.color.b, 0); // Set alpha to 0
+        }
+    }
+
+
     void Awake()
     {
         if (Instance == null)
@@ -51,16 +60,14 @@ public class CutsceneController : MonoBehaviour
 
     IEnumerator CutsceneTwo()
     {
-        // Disable the crosshair at the beginning of the cutscene
+        Debug.Log("Starting cutscene two, fading to black.");
         ToggleCrosshair(false);
-
-        // Now fade to black
-        Tween fadeTween = imageToFade.DOFade(1, 2); // Adjust the duration as needed
+        Tween fadeTween = imageToFade.DOFade(1, 2);
         yield return fadeTween.WaitForCompletion();
-
-        // After fading to black, load the next scene
-        LoadNextScene("Store"); 
+        Debug.Log("Fade to black complete, loading next scene.");
+        LoadNextScene("Store");
     }
+
 
     void ToggleCrosshair(bool isActive)
     {
@@ -72,6 +79,13 @@ public class CutsceneController : MonoBehaviour
 
     void LoadNextScene(string sceneName)
     {
-        SceneManager.LoadSceneAsync(sceneName);
+        StartCoroutine(LoadSceneAfterFade(sceneName));
     }
+
+    IEnumerator LoadSceneAfterFade(string sceneName)
+    {
+        yield return new WaitForSeconds(2); // Wait for the fade to complete
+        SceneManager.LoadScene(sceneName);
+    }
+
 }
