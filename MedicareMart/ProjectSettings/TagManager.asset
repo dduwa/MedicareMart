@@ -6,6 +6,8 @@ TagManager:
   tags:
   - BusSeat
   - BusCam
+  - Audio
+  - Menu
   layers:
   - Default
   - TransparentFX
