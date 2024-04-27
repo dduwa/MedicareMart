@@ -31,10 +31,8 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            // Optionally, handle the situation if no Menu object is found
-            // For example, you might want to play a different music track or do nothing
-            // musicSource.clip = someOtherBackgroundMusic;
-            // musicSource.Play();
+             musicSource.clip = gameBackground;
+             musicSource.Play();
         }
     }
 

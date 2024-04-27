@@ -14,6 +14,18 @@ public class BusMovement : MonoBehaviour
 
     public Camera busCam; // Reference to the BusCam camera
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        // Find the AudioManager in the scene and get the AudioManager component
+        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioManagerObject != null)
+        {
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
+        }
+    }
+
     void Start()
     {
         CutsceneController.Instance.StartCutscene(1); // Start the first cutscene

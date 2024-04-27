@@ -637,7 +637,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 30.046406, y: 142.66}
+  m_AnchoredPosition: {x: 18.849, y: 187}
   m_SizeDelta: {x: 1187.4622, y: 219.5042}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1025214015
@@ -830,7 +830,7 @@ GameObject:
   - component: {fileID: 1128380642}
   m_Layer: 5
   m_Name: MainMenu
-  m_TagString: Untagged
+  m_TagString: Menu
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

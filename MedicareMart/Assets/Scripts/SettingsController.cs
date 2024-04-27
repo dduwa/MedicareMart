@@ -28,10 +28,8 @@ public class SettingsController : MonoBehaviour
 
     public void ButtonHandlerBack()
     {
-        //Debug.Log("Settings button pressed");
         if (audioManager != null)
         {
-            //Debug.Log("AudioManager found, playing click sound");
             audioManager.PlaySFX(audioManager.buttonClick); // Play button click sound
         }
 

@@ -10,6 +10,18 @@ public class PauseMenuController : MonoBehaviour
     // Declare a public GameObject variable for the Pause Menu UI.
     public GameObject pauseMenuUI;
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        // Find the AudioManager in the scene and get the AudioManager component
+        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioManagerObject != null)
+        {
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +38,7 @@ public class PauseMenuController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Q key pressed. Current pause state: " + isPaused);
+            Debug.Log("Esc key pressed. Current pause state: " + isPaused);
             TogglePause();
         }
     }
@@ -46,15 +58,32 @@ public class PauseMenuController : MonoBehaviour
         Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked; // Lock cursor when not paused
     }
 
+    IEnumerator WaitForSoundToFinishAndLoadScene(string sceneName, float delay)
+    {
+        // Wait for the length of the clip to ensure it has finished playing.
+        yield return new WaitForSeconds(delay);
+        // Load the scene.
+        SceneManager.LoadSceneAsync(sceneName);
+    }
+
+
     public void ButtonHandlerSettings()
     {
-        // Consider pausing time or handling pause state appropriately when going to settings
-        SceneManager.LoadSceneAsync("Settings");
+        if (audioManager != null)
+        {
+            audioManager.PlaySFX(audioManager.buttonClick); // Play button click sound
+        }
+
+        StartCoroutine(WaitForSoundToFinishAndLoadScene("Settings", audioManager.buttonClick.length));
     }
 
     public void ButtonHandlerMainMenu()
     {
-        Time.timeScale = 1f; // Make sure the game isn't paused when returning to the main menu
-        SceneManager.LoadSceneAsync("Menu");
+        if (audioManager != null)
+        {
+            audioManager.PlaySFX(audioManager.buttonClick); // Play button click sound
+        }
+
+        StartCoroutine(WaitForSoundToFinishAndLoadScene("Menu", audioManager.buttonClick.length));
     }
 }
