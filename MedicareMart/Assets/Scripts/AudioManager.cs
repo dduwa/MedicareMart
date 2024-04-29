@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance;
+
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
@@ -19,6 +21,19 @@ public class AudioManager : MonoBehaviour
     public AudioClip busDeparture; // Assuming you meant to include a bus departure sound
     public AudioClip busEngine;
     public AudioClip busHorn;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +52,7 @@ public class AudioManager : MonoBehaviour
             musicSource.Play();
         }
     }
+
 
 
     public void PlaySFX(AudioClip clip)

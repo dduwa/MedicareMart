@@ -5,20 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    private AudioManager audioManager; // Reference to the AudioManager
+    AudioManager audioManager; // Reference to the AudioManager
     private Coroutine coroutine;
 
     private void Awake()
     {
-        // Find the AudioManager in the scene and get the AudioManager component
-        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
+        audioManager = AudioManager.Instance;
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {

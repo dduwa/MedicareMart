@@ -3497,7 +3497,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 475249377}
   firstPersonController: {fileID: 1877780882}
-  loadingScreenController: {fileID: 1897009103}
 --- !u!1001 &769967481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4194,7 +4193,7 @@ AudioSource:
   m_GameObject: {fileID: 944042146}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 2318197332354828235, guid: 591f6b24b14c14347bea61b37c4bc311, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.505
@@ -8836,7 +8835,7 @@ AudioSource:
   m_GameObject: {fileID: 2039795124}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 199181622931378111, guid: 591f6b24b14c14347bea61b37c4bc311, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

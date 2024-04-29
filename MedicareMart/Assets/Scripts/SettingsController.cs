@@ -2,20 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.Audio;
+
 
 
 public class SettingsController : MonoBehaviour
 {
     AudioManager audioManager;
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private Slider musicSlider;
+
 
     private void Awake()
     {
-        // Find the AudioManager in the scene and get the AudioManager component
         GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
         if (audioManagerObject != null)
         {
             audioManager = audioManagerObject.GetComponent<AudioManager>();
         }
+    }
+
+    private void Start()
+    {
+        if(PlayerPrefs.HasKey("MusicVolume"))
+        {
+            LoadMusicVolume();
+        }
+        else
+        {
+            SetMusicVolume();
+
+        }
+
     }
 
     IEnumerator WaitForSoundToFinishAndLoadScene(string sceneName, float delay)
@@ -34,5 +53,18 @@ public class SettingsController : MonoBehaviour
         }
 
         StartCoroutine(WaitForSoundToFinishAndLoadScene("Menu", audioManager.buttonClick.length));
+    }
+
+    public void SetMusicVolume()
+    {
+        float volume = musicSlider.value;
+        audioMixer.SetFloat("Music", Mathf.Log10(volume)*20);
+        PlayerPrefs.SetFloat("MusicVolume", volume);
+    }
+
+    private void LoadMusicVolume()
+    {
+        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        SetMusicVolume();
     }
 }
