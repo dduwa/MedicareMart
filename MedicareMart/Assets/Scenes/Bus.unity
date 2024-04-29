@@ -10508,6 +10508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1382472536462463318}
   - component: {fileID: 1757626369420053485}
+  - component: {fileID: 1757626369420053486}
   m_Layer: 0
   m_Name: man
   m_TagString: Untagged
@@ -10534,6 +10535,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1757626369420053486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757626369420053484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db428ed7764314f46b9877e7811dce67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1790213728881649037
 Transform:
   m_ObjectHideFlags: 0
@@ -12373,7 +12386,8 @@ MonoBehaviour:
   - {fileID: 1435378684}
   speed: 5
   doorController: {fileID: 2284515758849456479}
-  gameManager: {fileID: 0}
+  busDriverController: {fileID: 1757626369420053486}
+  gameManager: {fileID: 1324265358}
   busCam: {fileID: 1442787445}
 --- !u!64 &6610809141173049460
 MeshCollider:

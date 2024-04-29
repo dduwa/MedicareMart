@@ -9,6 +9,7 @@ public class BusMovement : MonoBehaviour
     public float speed = 5f;
     private int waypointIndex = 0;
     public BusDoorController doorController;
+    public BusDriverController busDriverController;
     public GameManager gameManager;
     
     private bool playerEntered = false; // This should be set to true by another script when the player enters a specific trigger
@@ -47,6 +48,7 @@ public class BusMovement : MonoBehaviour
 
       public void PlayerEntered()
     {
+        busDriverController.IdleSitting(); // Set the bus driver to idle sitting
         gameManager.TriggerObjective("Sit down in any seat.");
         Debug.Log("PlayerEntered method called"); // Ensure this is called
 
@@ -64,6 +66,7 @@ public class BusMovement : MonoBehaviour
             {
                 if (waypointIndex == 0) // Correctly check for the first waypoint
                 {
+                   // busDriverController.Driving(); // Set the bus driver to driving
                     audioManager.PlaySFX(audioManager.busArrival); // Sound for bus starting
                 }
 
