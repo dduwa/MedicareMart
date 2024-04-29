@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public GameObject crosshair;
+    public ObjectivesController objectivesManager;
+  
 
     private void Awake()
     {
@@ -25,6 +27,12 @@ public class GameManager : MonoBehaviour
     {
         if(crosshair != null)
             crosshair.SetActive(state);
+    }
+
+    public void TriggerObjective(string objective)
+    {
+        if (objectivesManager != null)
+            objectivesManager.AddObjective(objective);
     }
     // Start is called before the first frame update
     void Start()

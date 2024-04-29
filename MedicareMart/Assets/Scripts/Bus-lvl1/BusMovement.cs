@@ -9,6 +9,7 @@ public class BusMovement : MonoBehaviour
     public float speed = 5f;
     private int waypointIndex = 0;
     public BusDoorController doorController;
+    public GameManager gameManager;
     
     private bool playerEntered = false; // This should be set to true by another script when the player enters a specific trigger
 
@@ -23,10 +24,15 @@ public class BusMovement : MonoBehaviour
         {
             audioManager = audioManagerObject.GetComponent<AudioManager>();
         }
+
+        gameManager = GameManager.Instance;
+
     }
 
     void Start()
     {
+        gameManager.TriggerObjective("Take the bus to work.");
+
         CutsceneController.Instance.StartCutscene(1); // Start the first cutscene
 
          // Parent the BusCam to this bus GameObject
@@ -41,7 +47,8 @@ public class BusMovement : MonoBehaviour
 
       public void PlayerEntered()
     {
-         Debug.Log("PlayerEntered method called"); // Ensure this is called
+        gameManager.TriggerObjective("Sit down in any seat.");
+        Debug.Log("PlayerEntered method called"); // Ensure this is called
 
         playerEntered = true;
     }
