@@ -5,19 +5,44 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    AudioManager audioManager; // Reference to the AudioManager
+    private AudioManager audioManager; // Reference to the AudioManager
     private Coroutine coroutine;
+    public GameObject popup; // Reference to the Popup GameObject
 
     private void Awake()
     {
-        audioManager = AudioManager.Instance;
+        // Find the AudioManager object in the scene and assign it to the audioManager variable.
+        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioManagerObject != null)
+        {
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
+        }
+
+        // Initialize Popup as not active when the scene starts
+        if (popup != null)
+        {
+            popup.SetActive(false);
+        }
     }
 
-
-    // Update is called once per frame
-    void Update()
+    // Add a new function to handle the opening of the popup
+    public void OpenPopup()
     {
+        if (popup != null)
+        {
+            popup.SetActive(true);
+            // Optionally disable other UI elements here
+        }
+    }
 
+    // Add a new function to handle the closing of the popup
+    public void ClosePopup()
+    {
+        if (popup != null)
+        {
+            popup.SetActive(false);
+            // Optionally re-enable other UI elements here
+        }
     }
 
     public void ButtonHandlerPlay()
@@ -77,18 +102,5 @@ public class MainMenuController : MonoBehaviour
     // Stop playing the scene
     UnityEditor.EditorApplication.isPlaying = false;
 #endif
-    }
-
-
-    public void ButtonHandlerSettings()
-    {
-        //Debug.Log("Settings button pressed");
-        if (audioManager != null)
-        {
-           //Debug.Log("AudioManager found, playing click sound");
-            audioManager.PlaySFX(audioManager.buttonClick); // Play button click sound
-        }
-
-        StartCoroutine(WaitForSoundToFinishAndLoadScene("Settings", audioManager.buttonClick.length));
     }
 }

@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Settings.unity
     guid: cdfc0fa294c7406478cef176e02389a0
   - enabled: 1
+    path: Assets/Scenes/Intro.unity
+    guid: 1e5b50d2e77e04848b8dab929feb3bb4
+  - enabled: 1
     path: Assets/Scenes/Bus.unity
     guid: c1d745191f48ce74484aa74471b40ac6
   - enabled: 1
