@@ -1049,6 +1049,9 @@ MonoBehaviour:
   doorIn: {fileID: 8300000, guid: 683e548a1933d3b49aaec51a6836381f, type: 3}
   storeDoorbell: {fileID: 8300000, guid: b78edaf2736a97141b04c97876740723, type: 3}
   busArrival: {fileID: 8300000, guid: ba3752c8c473834458ce3e74b34a25b0, type: 3}
+  busDeparture: {fileID: 8300000, guid: 8af05a155ef4c534ba5fdd88b597fcf2, type: 3}
+  busEngine: {fileID: 8300000, guid: 6ea07b24ed5b8694bab5f9eb6ead6416, type: 3}
+  busHorn: {fileID: 8300000, guid: 1d5f9098e6373de48a655b1bae82de19, type: 3}
 --- !u!4 &1196112558
 Transform:
   m_ObjectHideFlags: 0

@@ -18,7 +18,6 @@ public class BusMovement : MonoBehaviour
 
     private void Awake()
     {
-        // Find the AudioManager in the scene and get the AudioManager component
         GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
         if (audioManagerObject != null)
         {
@@ -67,7 +66,6 @@ public class BusMovement : MonoBehaviour
 
                     if (playerEntered)
                     {
-                        //audioManager.PlaySFX(audioManager.busEngine);
                         CloseDoor();
                     }
                 }

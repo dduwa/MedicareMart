@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 
+
+
 public class PauseMenuController : MonoBehaviour
 {
     private bool isPaused = false;
@@ -12,13 +14,10 @@ public class PauseMenuController : MonoBehaviour
 
     [SerializeField] public FirstPersonController firstPersonController;
 
-
-
     AudioManager audioManager;
 
     private void Awake()
     {
-        // Find the AudioManager in the scene and get the AudioManager component
         GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
         if (audioManagerObject != null)
         {
@@ -74,30 +73,28 @@ public class PauseMenuController : MonoBehaviour
   
     }
 
-
-    IEnumerator WaitForSoundToFinishAndLoadScene(string sceneName, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        SceneManager.LoadSceneAsync(sceneName);
-    }
-
     public void ButtonHandlerSettings()
     {
+        //Debug.Log("Settings button pressed");
         if (audioManager != null)
         {
+            //Debug.Log("AudioManager found, playing click sound");
             audioManager.PlaySFX(audioManager.buttonClick); // Play button click sound
         }
 
-        StartCoroutine(WaitForSoundToFinishAndLoadScene("Settings", audioManager.buttonClick.length));
+        SceneManager.LoadSceneAsync("Settings");
     }
 
     public void ButtonHandlerMainMenu()
     {
+        //Debug.Log("Settings button pressed");
         if (audioManager != null)
         {
+            //Debug.Log("AudioManager found, playing click sound");
             audioManager.PlaySFX(audioManager.buttonClick); // Play button click sound
         }
+        SceneManager.LoadSceneAsync("Menu");
 
-        StartCoroutine(WaitForSoundToFinishAndLoadScene("Menu", audioManager.buttonClick.length));
     }
+
 }
