@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorController : MonoBehaviour
+public class BusDoorController : MonoBehaviour
 {
     Animator animator;
+  
 
     void Start()
     {
@@ -14,10 +15,12 @@ public class DoorController : MonoBehaviour
     public void OpenDoor()
     {
         animator.SetBool("isOpen", false);
+   
     }
 
     public void CloseDoor()
     {
         animator.SetBool("isOpen", true);
+ 
     }
 }

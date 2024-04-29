@@ -8,7 +8,7 @@ public class BusMovement : MonoBehaviour
     public Transform[] waypoints; // Assign the waypoints in the inspector
     public float speed = 5f;
     private int waypointIndex = 0;
-    public DoorController doorController;
+    public BusDoorController doorController;
     
     private bool playerEntered = false; // This should be set to true by another script when the player enters a specific trigger
 
@@ -56,25 +56,28 @@ public class BusMovement : MonoBehaviour
 
             if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
             {
+                if (waypointIndex == 0) // Correctly check for the first waypoint
+                {
+                    audioManager.PlaySFX(audioManager.busArrival); // Sound for bus starting
+                }
+
                 if (waypointIndex == waypoints.Length - 1)
                 {
                     doorController.OpenDoor(); // Open the door at the last waypoint
-                    // Check if player has already entered the trigger and close the door if true
-                    //Debug.Log("Player has entered");
+
                     if (playerEntered)
                     {
-                       // Debug.Log("Player has entered the trigger zone.2");
+                        //audioManager.PlaySFX(audioManager.busEngine);
                         CloseDoor();
                     }
                 }
                 else
                 {
-                     waypointIndex++;
+                    waypointIndex++;
                 }
             }
         }
     }
-  
 
     public void CloseDoor()
     {

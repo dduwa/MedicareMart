@@ -4,6 +4,28 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+
+    public GameObject crosshair;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void ToggleCrosshair(bool state)
+    {
+        if(crosshair != null)
+            crosshair.SetActive(state);
+    }
     // Start is called before the first frame update
     void Start()
     {

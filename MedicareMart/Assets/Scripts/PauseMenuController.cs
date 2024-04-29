@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class PauseMenuController : MonoBehaviour
 {
     private bool isPaused = false;
 
-    // Declare a public GameObject variable for the Pause Menu UI.
     public GameObject pauseMenuUI;
+
+    [SerializeField] public FirstPersonController firstPersonController;
+
+
 
     AudioManager audioManager;
 
@@ -25,8 +29,7 @@ public class PauseMenuController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Instead of disabling the gameObject this script is attached to,
-        // disable the Pause Menu UI GameObject which should be assigned in the inspector.
+        // Disable the Pause Menu UI GameObject which should be assigned in the inspector.
         if (pauseMenuUI != null)
             pauseMenuUI.SetActive(false);
     }
@@ -34,38 +37,49 @@ public class PauseMenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Update is being called.");
-
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Listen for the Escape key to pause the game, but not to unpause it.
+        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
         {
-            Debug.Log("Esc key pressed. Current pause state: " + isPaused);
-            TogglePause();
+            Debug.Log("Esc key pressed. Game is now paused.");
+            PauseGame();
         }
     }
 
-    public void TogglePause()
+    public void PauseGame()
     {
-        isPaused = !isPaused;
+        isPaused = true;
+        firstPersonController.isPaused = true;
+        pauseMenuUI.SetActive(true);
+        Time.timeScale = 0f;
+        AudioListener.pause = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;          
 
-        // Use the pauseMenuUI reference to activate or deactivate the pause menu
-        if (pauseMenuUI != null)
-            pauseMenuUI.SetActive(isPaused);
-
-        Time.timeScale = isPaused ? 0f : 1f; // This will pause or resume the game
-
-        // Set the cursor state
-        Cursor.visible = isPaused; // Show cursor when paused, hide when not paused
-        Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked; // Lock cursor when not paused
+        if (GameManager.Instance != null)
+            GameManager.Instance.ToggleCrosshair(false);
     }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        firstPersonController.isPaused = false;
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        AudioListener.pause = false;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.ToggleCrosshair(true);
+  
+    }
+
 
     IEnumerator WaitForSoundToFinishAndLoadScene(string sceneName, float delay)
     {
-        // Wait for the length of the clip to ensure it has finished playing.
         yield return new WaitForSeconds(delay);
-        // Load the scene.
         SceneManager.LoadSceneAsync(sceneName);
     }
-
 
     public void ButtonHandlerSettings()
     {

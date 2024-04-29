@@ -16,8 +16,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip doorIn;
     public AudioClip storeDoorbell;
     public AudioClip busArrival;
-
-
+    public AudioClip busDeparture; // Assuming you meant to include a bus departure sound
+    public AudioClip busEngine;
+    public AudioClip busHorn;
 
     // Start is called before the first frame update
     void Start()
@@ -31,16 +32,12 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-             musicSource.clip = gameBackground;
-             musicSource.Play();
+            // Otherwise, play the game background music
+            musicSource.clip = gameBackground;
+            musicSource.Play();
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void PlaySFX(AudioClip clip)
     {
@@ -49,6 +46,5 @@ public class AudioManager : MonoBehaviour
             sfxSource.PlayOneShot(clip);
         }
     }
-
 }
 // Code References: https://www.youtube.com/watch?v=N8whM1GjH4w (Unity Audio Manager Tutorial)

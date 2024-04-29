@@ -12,6 +12,8 @@ public class CutsceneController : MonoBehaviour
 
     public Camera busCam;
 
+    AudioManager audioManager;
+
     void Start()
     {
         if (imageToFade != null)
@@ -31,6 +33,13 @@ public class CutsceneController : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+
+        // Find the AudioManager in the scene and get the AudioManager component
+        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioManagerObject != null)
+        {
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
         }
     }
 
@@ -55,11 +64,12 @@ public class CutsceneController : MonoBehaviour
     {
         // Cutscene for starting the game: Fade from black and toggle crosshair
         yield return new WaitForSeconds(1);
-        imageToFade.DOFade(0, 2).OnComplete(() => ToggleCrosshair(true));
+        imageToFade.DOFade(0, 2).OnComplete(() => GameManager.Instance.ToggleCrosshair(true));
     }
 
     IEnumerator CutsceneTwo()
     {
+        audioManager.PlaySFX(audioManager.busDeparture);
         Debug.Log("Starting cutscene two, fading to black.");
         ToggleCrosshair(false);
         Tween fadeTween = imageToFade.DOFade(1, 2);
@@ -71,10 +81,8 @@ public class CutsceneController : MonoBehaviour
 
     void ToggleCrosshair(bool isActive)
     {
-        if (crosshair != null)
-        {
-            crosshair.SetActive(isActive);
-        }
+        if (GameManager.Instance != null)
+            GameManager.Instance.ToggleCrosshair(isActive);
     }
 
     void LoadNextScene(string sceneName)
