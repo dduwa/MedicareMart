@@ -46,6 +46,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void PauseGame()
     {
+        audioManager.PlaySFX(audioManager.buttonClick);
         isPaused = true;
         firstPersonController.isPaused = true;
         pauseMenuUI.SetActive(true);
@@ -60,6 +61,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void ResumeGame()
     {
+        audioManager.PlaySFX(audioManager.buttonClick);
         isPaused = false;
         firstPersonController.isPaused = false;
         pauseMenuUI.SetActive(false);
