@@ -5,25 +5,22 @@ using UnityEngine;
 public class StoreDoorController : MonoBehaviour
 {
  public Animator doorAnimator;
-    private AudioSource audioSource; 
     private bool isOpen = false;
 
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioManagerObject != null)
+        {
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
+        }
+
+    }
     void Start()
     {
         doorAnimator.SetBool("isOpen", false); // Set the initial state of the door to closed
-
-        audioSource = GetComponent<AudioSource>();
-
-        // If the AudioSource is not found, log an error
-        if (audioSource == null)
-        {
-            Debug.LogError("AudioSource component not found on the GameObject: " + gameObject.name);
-        }
-        else if (audioSource.clip == null)
-        {
-            // If the AudioSource is found but the clip is not set, log a warning
-            Debug.LogWarning("AudioSource clip is not set on the GameObject: " + gameObject.name);
-        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -31,7 +28,7 @@ public class StoreDoorController : MonoBehaviour
         if (!isOpen)
         {
             doorAnimator.Play("DoorOpen");
-            audioSource.Play(); // Play the door open sound
+            audioManager.PlaySFX(audioManager.storeDoorbell);
             isOpen = true;
         }
     }
