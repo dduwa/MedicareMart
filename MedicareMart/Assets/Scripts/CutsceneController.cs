@@ -87,7 +87,16 @@ public class CutsceneController : MonoBehaviour
 
     void LoadNextScene(string sceneName)
     {
-        StartCoroutine(LoadSceneAfterFade(sceneName));
+        SceneManager.LoadScene(sceneName);
+        StartCoroutine(FadeInOnSceneLoaded());
+    }
+
+    IEnumerator FadeInOnSceneLoaded()
+    {
+        yield return new WaitForEndOfFrame();  // Ensure the scene is loaded
+        Image imageInNewScene = GameObject.Find("Image").GetComponent<Image>(); 
+        imageInNewScene.color = new Color(0, 0, 0, 1); // Ensure the image is fully black
+        imageInNewScene.DOFade(0, 2);  // Fade to transparent
     }
 
     IEnumerator LoadSceneAfterFade(string sceneName)

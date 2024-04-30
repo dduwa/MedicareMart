@@ -66,7 +66,7 @@ public class BusMovement : MonoBehaviour
             {
                 if (waypointIndex == 0) // Correctly check for the first waypoint
                 {
-                   // busDriverController.Driving(); // Set the bus driver to driving
+                    busDriverController.Driving(); // Set the bus driver to driving
                     audioManager.PlaySFX(audioManager.busArrival); // Sound for bus starting
                 }
 
