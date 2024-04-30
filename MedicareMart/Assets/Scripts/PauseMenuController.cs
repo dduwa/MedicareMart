@@ -52,11 +52,14 @@ public class PauseMenuController : MonoBehaviour
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         AudioListener.pause = true;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;          
+                
 
         if (GameManager.Instance != null)
+        {
             GameManager.Instance.ToggleCrosshair(false);
+            GameManager.Instance.ToggleCursorVisibility(true);
+        }
+   
     }
 
     public void ResumeGame()
@@ -67,12 +70,12 @@ public class PauseMenuController : MonoBehaviour
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         AudioListener.pause = false;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-
         if (GameManager.Instance != null)
+        {
             GameManager.Instance.ToggleCrosshair(true);
-  
+            GameManager.Instance.ToggleCursorVisibility(false);
+        }
+
     }
 
    

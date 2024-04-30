@@ -34,6 +34,13 @@ public class GameManager : MonoBehaviour
         if (objectivesManager != null)
             objectivesManager.AddObjective(objective);
     }
+
+    public void ToggleCursorVisibility(bool visible)
+    {
+        Cursor.visible = visible;
+        Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

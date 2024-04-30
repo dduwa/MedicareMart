@@ -99,21 +99,13 @@ public class CutsceneController : MonoBehaviour
     {
         audioManager.PlaySFX(audioManager.busDeparture);
         Debug.Log("Starting cutscene two, fading to black.");
-        ToggleCrosshair(false);
+        GameManager.Instance.ToggleCrosshair(false);
         yield return new WaitForSeconds(2); // Allow SFX to play and not overlap with fading
         FadeImage(imageToFade, 1, 2, () =>
         {
             Debug.Log("Fade to black complete, loading next scene.");
             LoadNextScene("Store");
         });
-    }
-
-
-
-    void ToggleCrosshair(bool isActive)
-    {
-        if (GameManager.Instance != null)
-            GameManager.Instance.ToggleCrosshair(isActive);
     }
 
     void LoadNextScene(string sceneName)
@@ -128,6 +120,7 @@ public class CutsceneController : MonoBehaviour
         Image imageInNewScene = GameObject.Find("Image").GetComponent<Image>();
         if (imageInNewScene != null)
         {
+            GameManager.Instance.ToggleCrosshair(false);
             imageInNewScene.color = new Color(0, 0, 0, 1); // Ensure the image is fully black
             FadeImage(imageInNewScene, 0, 2);  // Fade to transparent
         }

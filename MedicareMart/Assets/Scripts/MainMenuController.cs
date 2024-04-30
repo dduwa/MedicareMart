@@ -24,8 +24,10 @@ public class MainMenuController : MonoBehaviour
             popup.SetActive(false);
         }
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.ToggleCursorVisibility(true);
+        }
     }
 
     // Add a new function to handle the opening of the popup
@@ -35,7 +37,6 @@ public class MainMenuController : MonoBehaviour
         {
             audioManager.PlaySFX(audioManager.buttonClick);
             popup.SetActive(true);
-            // Optionally disable other UI elements here
         }
     }
 
@@ -46,7 +47,6 @@ public class MainMenuController : MonoBehaviour
         {
             audioManager.PlaySFX(audioManager.buttonClick);
             popup.SetActive(false);
-            // Optionally re-enable other UI elements here
         }
     }
 
