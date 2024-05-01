@@ -32,8 +32,16 @@ public class GameManager : MonoBehaviour
     public void TriggerObjective(string objective)
     {
         if (objectivesManager != null)
+        {
+            Debug.Log("Triggering Objective: " + objective);
             objectivesManager.AddObjective(objective);
+        }
+        else
+        {
+            Debug.Log("ObjectivesManager not initialized");
+        }
     }
+
 
     public void ToggleCursorVisibility(bool visible)
     {

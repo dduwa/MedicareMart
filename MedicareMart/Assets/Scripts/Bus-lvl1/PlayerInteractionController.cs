@@ -20,7 +20,9 @@ public class PlayerInteractionController : MonoBehaviour {
   //  [SerializeField] private float sittingFOV = 60f; // FOV value when sitting
     private float originalFOV; // To store the original FOV value
 
-	void Awake ()
+	
+
+    void Awake ()
 	{
 		ToggleSelectedCursor (false);
 		originalFOV = playerCamera.fieldOfView; // Store the original FOV value

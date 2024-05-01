@@ -12,16 +12,27 @@ public class PlayerInteractionStore : MonoBehaviour
     public FirstPersonController firstPersonController;
     [SerializeField] private Camera playerCamera;
     public float interactionDistance = 2f; // Distance within which a player can interact
+    private Interactable currentInteractable;
 
     void Awake()
     {
         ToggleSelectedCursor(false);
+        
+
+    }
+
+    void Start()
+    {
+        GameManager.Instance.TriggerObjective("Check the note left by the manager on the computer.");
+
     }
 
     void Update()
     {
         PhysicsRaycasts();
         GraphicsRaycasts();
+        HandleInteraction();
+
     }
 
     public void ToggleSelectedCursor(bool showSelectedCursor)
@@ -30,35 +41,45 @@ public class PlayerInteractionStore : MonoBehaviour
         crosshairSelected.enabled = showSelectedCursor;
     }
 
-    void PhysicsRaycasts()
+
+
+    void HandleInteraction()
     {
-        Vector3 centreOfScreen = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
-        Ray centreOfScreenRay = playerCamera.ScreenPointToRay(centreOfScreen);
-        RaycastHit hit;
-
-        if (Physics.Raycast(centreOfScreenRay, out hit, interactionDistance))
+        // Change KeyCode.E to mouse button detection
+        if (Input.GetMouseButtonDown(0) && currentInteractable != null)
         {
-            StoreDoorControllers doorController = hit.collider.GetComponent<StoreDoorControllers>();
+            currentInteractable.Interact();
+            currentInteractable = null; // Optionally reset after interaction
+        }
+    }
 
-            if (doorController != null)
-            {
-                ToggleSelectedCursor(true); // Show that the object is interactable
+    void PhysicsRaycasts()
+{
+    Vector3 centreOfScreen = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
+    Ray centreOfScreenRay = playerCamera.ScreenPointToRay(centreOfScreen);
+    RaycastHit hit;
 
-                if (Input.GetKeyDown(KeyCode.E)) // Check for 'E' key to interact
-                {
-                    doorController.ToggleDoor(); // Toggle the door state
-                }
-            }
-            else
-            {
-                ToggleSelectedCursor(false);
-            }
+    if (Physics.Raycast(centreOfScreenRay, out hit, interactionDistance))
+    {
+        Interactable interactable = hit.collider.GetComponent<Interactable>();
+        if (interactable != null)
+        {
+            currentInteractable = interactable;
+            ToggleSelectedCursor(true); // Show that the object is interactable
         }
         else
         {
             ToggleSelectedCursor(false);
+            currentInteractable = null;
         }
     }
+    else
+    {
+        ToggleSelectedCursor(false);
+        currentInteractable = null;
+    }
+}
+
 
     void GraphicsRaycasts()
     {
