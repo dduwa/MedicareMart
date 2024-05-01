@@ -31,5 +31,11 @@ public class ObjectivesController : MonoBehaviour
         objectiveTextTemplate.gameObject.SetActive(false);
     }
 
+    // reset the objectives list
+    public void ResetObjectives()
+    {
+        objectives.Clear();
+    }
+
 
 }

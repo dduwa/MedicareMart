@@ -8,6 +8,8 @@ TagManager:
   - BusCam
   - Audio
   - Menu
+  - ImageToFade
+  - Crosshair
   layers:
   - Default
   - TransparentFX

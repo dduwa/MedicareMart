@@ -49,7 +49,7 @@ public class BusMovement : MonoBehaviour
       public void PlayerEntered()
     {
         busDriverController.IdleSitting(); // Set the bus driver to idle sitting
-        gameManager.TriggerObjective("Sit down in any seat.");
+       
         Debug.Log("PlayerEntered method called"); // Ensure this is called
 
         playerEntered = true;

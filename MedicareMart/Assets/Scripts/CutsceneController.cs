@@ -10,27 +10,17 @@ public class CutsceneController : MonoBehaviour
 {
     public static CutsceneController Instance { get; private set; }
     public GameObject crosshair;
-    public Image imageToFade;
-
     public Camera busCam;
+    public Image ImageToFade { get; private set; }
 
     AudioManager audioManager;
-
-    void Start()
-    {
-        if (imageToFade != null)
-        {
-            imageToFade.color = new Color(imageToFade.color.r, imageToFade.color.g, imageToFade.color.b, 0); // Set alpha to 0
-        }
-    }
-
 
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject); // Make sure the singleton doesn't get destroyed on load
         }
         else
         {
@@ -45,6 +35,30 @@ public class CutsceneController : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        SetupImageToFade();
+    }
+
+    private void SetupImageToFade()
+    {
+        GameObject imageObject = GameObject.FindGameObjectWithTag("ImageToFade");
+        if (imageObject != null)
+        {
+            ImageToFade = imageObject.GetComponent<Image>();
+            if (ImageToFade != null)
+            {
+                // Set initial state of the image, for example, fully transparent
+                ImageToFade.color = new Color(ImageToFade.color.r, ImageToFade.color.g, ImageToFade.color.b, 0);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No object with 'ImageToFade' tag found. Check your scene setup.");
+        }
+    }
+
+
     private void FadeImage(Image image, float targetAlpha, float duration, Action onComplete = null)
     {
         if (image != null && image.gameObject.activeInHierarchy)
@@ -57,11 +71,13 @@ public class CutsceneController : MonoBehaviour
         }
     }
 
+
+
     void OnDestroy()
     {
-        if (imageToFade != null)
+        if (ImageToFade != null)
         {
-            imageToFade.DOKill(); // Stop any DOTween animations on this image
+            ImageToFade.DOKill(); // Stop any DOTween animations on this image
         }
     }
 
@@ -92,7 +108,7 @@ public class CutsceneController : MonoBehaviour
     {
         // Cutscene for starting the game: Fade from black and toggle crosshair
         yield return new WaitForSeconds(1);
-        FadeImage(imageToFade, 0, 2, () => GameManager.Instance.ToggleCrosshair(true));
+        FadeImage(ImageToFade, 0, 2, () => GameManager.Instance.ToggleCrosshair(true));
     }
 
     IEnumerator CutsceneTwo()
@@ -101,7 +117,7 @@ public class CutsceneController : MonoBehaviour
         Debug.Log("Starting cutscene two, fading to black.");
         GameManager.Instance.ToggleCrosshair(false);
         yield return new WaitForSeconds(2); // Allow SFX to play and not overlap with fading
-        FadeImage(imageToFade, 1, 2, () =>
+        FadeImage(ImageToFade, 1, 2, () =>
         {
             Debug.Log("Fade to black complete, loading next scene.");
             LoadNextScene("Store");
