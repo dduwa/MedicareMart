@@ -91,23 +91,14 @@ public class DialogueController : MonoBehaviour
         if (currentInteractable != null)
         {
             currentInteractable.SetInteractable(false);  // Make the NPC non-interactable
-            //currentInteractable = null;  // Optionally clear the reference
+                                                         //currentInteractable = null;  // Optionally clear the reference
         }
 
         if (managerController != null)
         {
             managerController.StopTalking(); // End dialogue animations
             managerController.StandUp(); // Stand up after dialogue
-
-            StartCoroutine(TriggerWalking());
         }
-    }
-
-    IEnumerator TriggerWalking()
-    {
-        // Assuming there's a delay before starting to walk
-        yield return new WaitForSeconds(2); // Wait for the stand up animation to finish
-        managerController.StartWalking(); // Start walking, assuming you have such a method in ManagerController
     }
 
 
