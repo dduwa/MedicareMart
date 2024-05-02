@@ -12,9 +12,12 @@ public class DialogueController : MonoBehaviour
     public Text continuePrompt;
     public FirstPersonController firstPersonController;
     public ManagerController managerController; // Reference to the ManagerController
+    [SerializeField] private Camera playerCamera;
 
     private string[] dialogueLines;
     private int currentLine = 0;
+    private float originalFov;
+    private Interactable currentInteractable;
 
     void Awake()
     {
@@ -32,8 +35,10 @@ public class DialogueController : MonoBehaviour
         continuePrompt.gameObject.SetActive(false);
     }
 
-    public void ShowDialogue(string[] lines)
+    public void ShowDialogue(string[] lines, Interactable interactable)
     {
+
+        currentInteractable = interactable;  // Store the reference to the interactable NPC
         GameManager.Instance.ToggleCrosshair(false);
         dialogueLines = lines;
         currentLine = 0;
@@ -41,12 +46,13 @@ public class DialogueController : MonoBehaviour
         dialoguePanel.SetActive(true);
         continuePrompt.gameObject.SetActive(true);
 
-        // Freeze the player by disabling the FirstPersonController
         firstPersonController.enabled = false;
+        originalFov = playerCamera.fieldOfView;
+        playerCamera.fieldOfView = Mathf.Max(30, originalFov - 20);
 
         if (managerController != null)
         {
-            managerController.StartTalking(); // Start dialogue animations
+            managerController.StartTalking();
         }
     }
 
@@ -79,6 +85,14 @@ public class DialogueController : MonoBehaviour
 
         // Enable the FirstPersonController to unfreeze the player
         firstPersonController.enabled = true;
+        // Reset the camera zoom
+        playerCamera.fieldOfView = originalFov;
+
+        if (currentInteractable != null)
+        {
+            currentInteractable.SetInteractable(false);  // Make the NPC non-interactable
+            //currentInteractable = null;  // Optionally clear the reference
+        }
 
         if (managerController != null)
         {

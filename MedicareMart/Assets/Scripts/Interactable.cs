@@ -6,9 +6,10 @@ public class Interactable : MonoBehaviour
 {
     public Material highlightMaterial;
     private Material originalMaterial;
-    public enum InteractionType { ReadNote, Talk, OpenDoor }
+    public enum InteractionType {Talk, OpenDoor }
     public InteractionType interactionType;
-    public string[] dialogueLines; // For ReadNote and Talk types
+    public string[] dialogueLines; // For Talk type
+    public bool isInteractable = true;
 
     void Start()
     {
@@ -16,17 +17,25 @@ public class Interactable : MonoBehaviour
         HighlightObject(true);  // Highlight when the game starts
     }
 
+    public void SetInteractable(bool state)
+    {
+        isInteractable = state;  // Update the interactability state
+
+        // Optionally disable collider or other components that trigger interaction
+        Collider collider = GetComponent<Collider>();
+        if (collider != null)
+            collider.enabled = state;
+    }
+
     public virtual void Interact()
     {
+        if (!isInteractable) return;
         // This method is overridden by all interactable objects.
         Debug.Log("Interacted with " + gameObject.name);
         switch (interactionType)
         {
-            case InteractionType.ReadNote:
-                DialogueController.Instance.ShowDialogue(dialogueLines);
-                break;
             case InteractionType.Talk:
-                DialogueController.Instance.ShowDialogue(dialogueLines);
+                DialogueController.Instance.ShowDialogue(dialogueLines, this.GetComponent<Interactable>());
                 break;
             case InteractionType.OpenDoor:
                 // Handle door interaction

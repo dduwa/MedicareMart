@@ -54,18 +54,24 @@ public class PlayerInteractionStore : MonoBehaviour
     }
 
     void PhysicsRaycasts()
-{
-    Vector3 centreOfScreen = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
-    Ray centreOfScreenRay = playerCamera.ScreenPointToRay(centreOfScreen);
-    RaycastHit hit;
-
-    if (Physics.Raycast(centreOfScreenRay, out hit, interactionDistance))
     {
-        Interactable interactable = hit.collider.GetComponent<Interactable>();
-        if (interactable != null)
+        Vector3 centreOfScreen = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0);
+        Ray centreOfScreenRay = playerCamera.ScreenPointToRay(centreOfScreen);
+        RaycastHit hit;
+
+        if (Physics.Raycast(centreOfScreenRay, out hit, interactionDistance))
         {
-            currentInteractable = interactable;
-            ToggleSelectedCursor(true); // Show that the object is interactable
+            Interactable interactable = hit.collider.GetComponent<Interactable>();
+            if (interactable != null && interactable.isInteractable) // Check if the interactable is actually interactable
+            {
+                currentInteractable = interactable;
+                ToggleSelectedCursor(true); // Show that the object is interactable
+            }
+            else
+            {
+                ToggleSelectedCursor(false);
+                currentInteractable = null;
+            }
         }
         else
         {
@@ -73,12 +79,7 @@ public class PlayerInteractionStore : MonoBehaviour
             currentInteractable = null;
         }
     }
-    else
-    {
-        ToggleSelectedCursor(false);
-        currentInteractable = null;
-    }
-}
+
 
 
     void GraphicsRaycasts()
