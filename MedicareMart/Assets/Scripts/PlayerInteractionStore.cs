@@ -23,7 +23,7 @@ public class PlayerInteractionStore : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.TriggerObjective("Check the note left by the manager on the computer.");
+        GameManager.Instance.TriggerObjective("Speak to the manager");
 
     }
 
