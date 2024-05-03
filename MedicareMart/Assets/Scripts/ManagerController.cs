@@ -1,26 +1,29 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class ManagerController : MonoBehaviour
 {
-    Animator animator;
-    UnityEngine.AI.NavMeshAgent navMeshAgent;
-    public Transform[] waypoints;
+    [SerializeField] private Animator animator;
+    [SerializeField] private NavMeshAgent navMeshAgent;
+    [SerializeField] private Transform[] waypoints;
+    
+
     private int currentWaypointIndex = 0;
     private bool readyToWalk = false;
 
-    void Awake()
+
+    private void Awake()
     {
         animator = GetComponent<Animator>();
-        navMeshAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
     public void StartTalking()
     {
         animator.SetBool("IsTalking", true);
         readyToWalk = false;
+        navMeshAgent.isStopped = true;
     }
 
     public void StopTalking()
@@ -31,54 +34,47 @@ public class ManagerController : MonoBehaviour
 
     IEnumerator DelayStandUp()
     {
-        yield return new WaitForSeconds(1); // Adjust time based on your need
+        yield return new WaitForSeconds(1);
         StandUp();
     }
 
     public void StandUp()
     {
         animator.SetTrigger("StandUp");
+        readyToWalk = true;
     }
 
-    void OnAnimatorIK(int layerIndex)
+    private void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Stand Up"))
-        {
-            // Ensures the stand-up animation completes before walking starts
-            readyToWalk = true;
-        }
-    }
-
-    public void Update()
-    {
-        Debug.DrawLine(transform.position, waypoints[currentWaypointIndex].position, Color.red);
-
         if (readyToWalk && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
-            if (currentWaypointIndex < waypoints.Length)
+            if (!navMeshAgent.hasPath || navMeshAgent.velocity.sqrMagnitude == 0f)
             {
-                StartWalkingToNextWaypoint();
+                if (currentWaypointIndex < waypoints.Length - 1)
+                {
+                    currentWaypointIndex++;
+                    MoveToNextWaypoint();
+                }
+                else
+                {
+                    animator.SetBool("IsWalking", false);
+                    readyToWalk = false;
+                    gameObject.SetActive(false);
+                }
             }
-            else
-            {
-                animator.SetBool("IsWalking", false); // Stop walking animation
-            }
+            
         }
     }
 
-    public void StartWalkingToNextWaypoint()
+    private void MoveToNextWaypoint()
     {
-        if (currentWaypointIndex >= waypoints.Length) return;
-
-        Vector3 targetDirection = waypoints[currentWaypointIndex].position - transform.position;
-        targetDirection.y = 0; // Keep the direction strictly horizontal
-        Quaternion rotation = Quaternion.LookRotation(targetDirection);
-        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * navMeshAgent.angularSpeed);
+        if (!readyToWalk) return;
 
         navMeshAgent.SetDestination(waypoints[currentWaypointIndex].position);
         animator.SetBool("IsWalking", true);
+        navMeshAgent.isStopped = false;
     }
 
+
+
 }
-
-

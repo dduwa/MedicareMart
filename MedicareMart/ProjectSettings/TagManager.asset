@@ -10,6 +10,8 @@ TagManager:
   - Menu
   - ImageToFade
   - Crosshair
+  - NPC
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - PostProcessing
   - Water
   - UI
-  - 
+  - doorlayer
   - 
   - 
   - 

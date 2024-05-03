@@ -22,9 +22,9 @@ public class Interactable : MonoBehaviour
         isInteractable = state;  // Update the interactability state
 
         // Optionally disable collider or other components that trigger interaction
-        Collider collider = GetComponent<Collider>();
-        if (collider != null)
-            collider.enabled = state;
+        //Collider collider = GetComponent<Collider>();
+        //if (collider != null)
+            //collider.enabled = state;
     }
 
     public virtual void Interact()
