@@ -99,6 +99,7 @@ public class DialogueController : MonoBehaviour
             managerController.StopTalking(); // End dialogue animations
             managerController.StandUp(); // Stand up after dialogue
         }
+        GameManager.Instance.TriggerObjective("Press T to check tasks, and clock in when ready.");
     }
 
 
