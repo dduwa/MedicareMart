@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject crosshair;
     public ObjectivesController objectivesManager;
+    public GameObject pauseMenuUI;
 
     private void Awake()
     {
@@ -18,6 +19,12 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    void Start()
+    {
+        // Disable the Pause Menu UI GameObject which should be assigned in the inspector.
+        if (pauseMenuUI != null)
+            pauseMenuUI.SetActive(false);
     }
 
     public void ToggleCrosshair(bool state)
@@ -45,6 +52,33 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Additional methods to manage other UI elements as needed
+    public void ShowPauseMenu()
+    {
+        if (pauseMenuUI != null)
+        {
+            pauseMenuUI.SetActive(true);
+            ToggleCrosshair(false);
+            ToggleCursorVisibility(true);
+        }
+        else
+        {
+            Debug.LogError("Pause menu UI is not assigned in the UIManager.");
+        }
+    }
+
+    public void HidePauseMenu()
+    {
+        if (pauseMenuUI != null)
+        {
+            pauseMenuUI.SetActive(false);
+            ToggleCrosshair(true);
+            ToggleCursorVisibility(false);
+        }
+        else
+        {
+            Debug.LogError("Pause menu UI is not assigned in the UIManager.");
+        }
+    }
+   
 }
 

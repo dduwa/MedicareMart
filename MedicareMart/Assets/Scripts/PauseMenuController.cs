@@ -2,18 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityStandardAssets.Characters.FirstPerson;
-
-
 
 public class PauseMenuController : MonoBehaviour
 {
-    private bool isPaused = false;
-
-    public GameObject pauseMenuUI;
-
-    [SerializeField] public FirstPersonController firstPersonController;
-
     AudioManager audioManager;
 
     private void Awake()
@@ -25,70 +16,35 @@ public class PauseMenuController : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        // Disable the Pause Menu UI GameObject which should be assigned in the inspector.
-        if (pauseMenuUI != null)
-            pauseMenuUI.SetActive(false);
-    }
+
 
     // Update is called once per frame
     void Update()
     {
-        // Listen for the Escape key to pause the game, but not to unpause it.
-        if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("Esc key pressed. Game is now paused.");
-            PauseGame();
+            Debug.Log("Esc key pressed. Toggling game pause state.");
+            GameManager.Instance.TogglePause();
+            PlayPauseSound();
         }
     }
 
-    public void PauseGame()
-    {
-        audioManager.PlaySFX(audioManager.buttonClick);
-        isPaused = true;
-        firstPersonController.isPaused = true;
-        pauseMenuUI.SetActive(true);
-        Time.timeScale = 0f;
-        AudioListener.pause = true;
-                
-
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.ToggleCrosshair(false);
-            UIManager.Instance.ToggleCursorVisibility(true);
-        }
-   
-    }
-
-    public void ResumeGame()
-    {
-        audioManager.PlaySFX(audioManager.buttonClick);
-        isPaused = false;
-        firstPersonController.isPaused = false;
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        AudioListener.pause = false;
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.ToggleCrosshair(true);
-            UIManager.Instance.ToggleCursorVisibility(false);
-        }
-
-    }
-
-   
-
-    public void ButtonHandlerMainMenu()
+    void PlayPauseSound()
     {
         if (audioManager != null)
         {
-            audioManager.PlaySFX(audioManager.buttonClick); // Play button click sound
+            audioManager.PlaySFX(audioManager.buttonClick);
         }
-        Time.timeScale = 1f;
-        SceneManager.LoadSceneAsync("Menu");
-
     }
+    public void OnMainMenuButtonPressed()
+    {
+        if (GameManager.Instance.IsGamePaused) // Make sure the game is paused before going to main menu
+        {
+            GameManager.Instance.TogglePause(); // Unpause the game or ensure proper game state before switching
+        }
+        PlayPauseSound();
+        SceneManager.LoadSceneAsync("Menu");
+    }
+
 
 }

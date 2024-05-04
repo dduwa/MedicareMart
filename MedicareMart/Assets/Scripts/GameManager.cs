@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Characters.FirstPerson;
+
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public GameState CurrentGameState { get; private set; } = GameState.MainMenu;
     private AudioManager audioManager; // Reference to the AudioManager
-
+    [SerializeField] public FirstPersonController firstPersonController;
+    public bool IsGamePaused { get; private set; }
+    // private GameObject pauseMenuUI;
     void Awake()
     {
+        Debug.Log("GameManager Awake() called");
         if (Instance == null)
         {
             Instance = this;
@@ -26,7 +31,17 @@ public class GameManager : MonoBehaviour
         {
             audioManager = audioManagerObject.GetComponent<AudioManager>();
         }
+        else
+        {
+            Debug.LogWarning("AudioManager not found in the scene");
+        }
+
+        Debug.Log("AudioManager found: " + (audioManager != null));
     }
+
+
+
+
 
     public enum GameState
     {
@@ -63,27 +78,43 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void PauseGame()
+    public void TogglePause()
     {
-        if (CurrentGameState == GameState.GameRunning)
+        if (IsGamePaused)
         {
-            CurrentGameState = GameState.GamePaused;
-            // Freeze game time, show pause menu
-            Time.timeScale = 0;
-            Debug.Log("Game Paused");
+            ResumeGame();
         }
+        else
+        {
+            PauseGame();
+        }
+    }
+
+    private void PauseGame()
+    {
+        IsGamePaused = true;
+        firstPersonController.isPaused = true;
+        UIManager.Instance.ShowPauseMenu();
+        Time.timeScale = 0f;
+        AudioListener.pause = true;
+        Debug.Log("Game Paused");
     }
 
     public void ResumeGame()
     {
-        if (CurrentGameState == GameState.GamePaused)
+        if (IsGamePaused)
         {
-            CurrentGameState = GameState.GameRunning;
-            // Resume game time, hide pause menu
-            Time.timeScale = 1;
+            IsGamePaused = false;
+            firstPersonController.isPaused = false;
+            UIManager.Instance.HidePauseMenu();
+            Time.timeScale = 1f;
+            AudioListener.pause = false;
             Debug.Log("Game Resumed");
         }
     }
+
+
+
 
     public void QuitGame()
     {
