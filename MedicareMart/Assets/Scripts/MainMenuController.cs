@@ -24,9 +24,9 @@ public class MainMenuController : MonoBehaviour
             popup.SetActive(false);
         }
 
-        if (GameManager.Instance != null)
+        if (UIManager.Instance != null)
         {
-            GameManager.Instance.ToggleCursorVisibility(true);
+            UIManager.Instance.ToggleCursorVisibility(true);
         }
     }
 
@@ -57,16 +57,7 @@ public class MainMenuController : MonoBehaviour
             audioManager.PlaySFX(audioManager.playButton); // Play button sound
         }
 
-        StartCoroutine(WaitForSoundToFinishAndLoadScene("Bus", audioManager.playButton.length));
-    }
-
-
-    IEnumerator WaitForSoundToFinishAndLoadScene(string sceneName, float delay)
-    {
-        // Wait for the length of the clip to ensure it has finished playing.
-        yield return new WaitForSeconds(delay);
-        // Load the scene.
-        SceneManager.LoadSceneAsync(sceneName);
+        GameManager.Instance.StartGame(); // Start the game
     }
 
     public void ButtonHandlerQuit()
@@ -75,37 +66,18 @@ public class MainMenuController : MonoBehaviour
         {
             // Play the button click sound.
             audioManager.PlaySFX(audioManager.buttonClick);
-
             // Start a coroutine to quit after the sound has finished playing.
-            StartCoroutine(WaitForSoundToFinishAndQuit(audioManager.buttonClick.length));
+            StartCoroutine(WaitForSoundToFinish(audioManager.buttonClick.length));
         }
         else
         {
-            // If AudioManager is not found, quit immediately.
-            QuitApplication();
+            GameManager.Instance.QuitGame();
         }
     }
 
-    IEnumerator WaitForSoundToFinishAndQuit(float delay)
+    IEnumerator WaitForSoundToFinish(float delay)
     {
         // Wait for the length of the clip to ensure it has finished playing.
         yield return new WaitForSeconds(delay);
-        // Quit the application.
-        QuitApplication();
-    }
-
-    private void QuitApplication()
-    {
-        // If we are running in a standalone build of the game
-#if UNITY_STANDALONE
-    // Quit the application
-    Application.Quit();
-#endif
-
-        // If we are running in the editor
-#if UNITY_EDITOR
-    // Stop playing the scene
-    UnityEditor.EditorApplication.isPlaying = false;
-#endif
     }
 }

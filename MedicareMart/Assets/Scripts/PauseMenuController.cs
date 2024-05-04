@@ -54,10 +54,10 @@ public class PauseMenuController : MonoBehaviour
         AudioListener.pause = true;
                 
 
-        if (GameManager.Instance != null)
+        if (UIManager.Instance != null)
         {
-            GameManager.Instance.ToggleCrosshair(false);
-            GameManager.Instance.ToggleCursorVisibility(true);
+            UIManager.Instance.ToggleCrosshair(false);
+            UIManager.Instance.ToggleCursorVisibility(true);
         }
    
     }
@@ -70,10 +70,10 @@ public class PauseMenuController : MonoBehaviour
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         AudioListener.pause = false;
-        if (GameManager.Instance != null)
+        if (UIManager.Instance != null)
         {
-            GameManager.Instance.ToggleCrosshair(true);
-            GameManager.Instance.ToggleCursorVisibility(false);
+            UIManager.Instance.ToggleCrosshair(true);
+            UIManager.Instance.ToggleCursorVisibility(false);
         }
 
     }

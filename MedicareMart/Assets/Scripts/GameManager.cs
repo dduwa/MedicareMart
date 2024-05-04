@@ -6,10 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
-    public GameObject crosshair;
-    public ObjectivesController objectivesManager;
-
+    public GameState CurrentGameState { get; private set; } = GameState.MainMenu;
+    private AudioManager audioManager; // Reference to the AudioManager
 
     void Awake()
     {
@@ -23,99 +21,77 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        InitializeComponents(); // Ensure components are initialized properly at start
-    }
-    void InitializeComponents()
-    {
-        // Set up or find other necessary components
-        FindCrosshair();  // Find and set the crosshair
-        FindObjectiveManager();  // Ensure the objectives manager is found
-    }
-
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;  // Subscribe to the sceneLoaded event
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;  // Unsubscribe to clean up
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        FindCrosshair();  // Re-find and assign the crosshair every time a scene is loaded
-        FindObjectiveManager();  // Also ensure the objectives manager is found
-    }
-
-    void FindCrosshair()
-    {
-        GameObject crosshairObject = GameObject.FindGameObjectWithTag("Crosshair");
-        if (crosshairObject != null)
+        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
+        if (audioManagerObject != null)
         {
-            crosshair = crosshairObject;
-            DontDestroyOnLoad(crosshair);  // Make sure crosshair is persistent across scenes
-        }
-        else
-        {
-            Debug.LogError("Crosshair object not found with tag 'Crosshair'");
+            audioManager = audioManagerObject.GetComponent<AudioManager>();
         }
     }
 
-
-    private void FindObjectiveManager()
+    public enum GameState
     {
-        objectivesManager = FindObjectOfType<ObjectivesController>();  // Find the ObjectivesManager in the current scene
-        if (objectivesManager == null)
+        MainMenu,
+        GameRunning,
+        GamePaused,
+        GameEnded
+    }
+
+    public void StartGame()
+    {
+        if (CurrentGameState == GameState.MainMenu)
         {
-            Debug.LogError("ObjectivesManager not found!");  // Log an error if not found
-        }
-        else
-        {
-            ResetState();  // Reset the state if the ObjectivesManager is found
+            CurrentGameState = GameState.GameRunning;
+            // Load the game scene or setup the game to start
+            StartCoroutine(WaitForSoundToFinsh("Bus", audioManager.playButton.length));
+            Debug.Log("Game Started");
         }
     }
 
-    public void ToggleCrosshair(bool state)
+    IEnumerator WaitForSoundToFinsh(string sceneName, float delay)
     {
-        if(crosshair != null)
-            crosshair.SetActive(state);
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadSceneAsync(sceneName);
     }
 
-    public void TriggerObjective(string objective)
+    public void EndGame()
     {
-        if (objectivesManager != null)
+        if (CurrentGameState == GameState.GameRunning)
         {
-            Debug.Log("Triggering Objective: " + objective);
-            objectivesManager.AddObjective(objective);
-        }
-        else
-        {
-            Debug.Log("ObjectivesManager not initialized");
+            CurrentGameState = GameState.GameEnded;
+            // Handle game ending, such as saving scores, showing end game UI, etc.
+            Debug.Log("Game Ended");
         }
     }
 
-
-    public void ToggleCursorVisibility(bool visible)
+    public void PauseGame()
     {
-        Cursor.visible = visible;
-        Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
+        if (CurrentGameState == GameState.GameRunning)
+        {
+            CurrentGameState = GameState.GamePaused;
+            // Freeze game time, show pause menu
+            Time.timeScale = 0;
+            Debug.Log("Game Paused");
+        }
     }
 
-    public void ResetState()
+    public void ResumeGame()
     {
-        ToggleCrosshair(true);  // Example: Always turn on crosshair when resetting state
-        ToggleCursorVisibility(true);  // Set cursor visibility as needed
+        if (CurrentGameState == GameState.GamePaused)
+        {
+            CurrentGameState = GameState.GameRunning;
+            // Resume game time, hide pause menu
+            Time.timeScale = 1;
+            Debug.Log("Game Resumed");
+        }
+    }
 
-        if (objectivesManager != null)
-        {
-            objectivesManager.ResetObjectives();
-        }
-        else
-        {
-            Debug.LogError("ObjectivesManager not initialized");
-        }
+    public void QuitGame()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;  // If running in the editor, stop playing
+    #else
+            Application.Quit();  // Quit the application in a build
+    #endif
     }
 
 

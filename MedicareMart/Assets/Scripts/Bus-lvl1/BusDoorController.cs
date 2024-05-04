@@ -14,7 +14,7 @@ public class BusDoorController : MonoBehaviour
 
     public void OpenDoor()
     {
-        GameManager.Instance.TriggerObjective("Pick a seat and sit down.");
+        UIManager.Instance.TriggerObjective("Pick a seat and sit down.");
         animator.SetBool("isOpen", false);
    
     }

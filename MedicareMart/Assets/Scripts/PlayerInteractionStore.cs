@@ -23,7 +23,7 @@ public class PlayerInteractionStore : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.TriggerObjective("Speak to the manager");
+        UIManager.Instance.TriggerObjective("Speak to the manager");
 
     }
 

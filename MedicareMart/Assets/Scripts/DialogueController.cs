@@ -39,7 +39,7 @@ public class DialogueController : MonoBehaviour
     {
 
         currentInteractable = interactable;  // Store the reference to the interactable NPC
-        GameManager.Instance.ToggleCrosshair(false);
+        UIManager.Instance.ToggleCrosshair(false);
         dialogueLines = lines;
         currentLine = 0;
         dialogueText.text = dialogueLines[currentLine];
@@ -81,7 +81,7 @@ public class DialogueController : MonoBehaviour
     {
         dialoguePanel.SetActive(false);
         continuePrompt.gameObject.SetActive(false);
-        GameManager.Instance.ToggleCrosshair(true);
+        UIManager.Instance.ToggleCrosshair(true);
 
         // Enable the FirstPersonController to unfreeze the player
         firstPersonController.enabled = true;
@@ -99,7 +99,7 @@ public class DialogueController : MonoBehaviour
             managerController.StopTalking(); // End dialogue animations
             managerController.StandUp(); // Stand up after dialogue
         }
-        GameManager.Instance.TriggerObjective("Press T to check tasks, and clock in when ready.");
+        UIManager.Instance.TriggerObjective("Press T to check tasks, and clock in when ready.");
     }
 
 

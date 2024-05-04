@@ -10,7 +10,7 @@ public class BusMovement : MonoBehaviour
     private int waypointIndex = 0;
     public BusDoorController doorController;
     public BusDriverController busDriverController;
-    public GameManager gameManager;
+    
     
     private bool playerEntered = false; // This should be set to true by another script when the player enters a specific trigger
 
@@ -25,14 +25,11 @@ public class BusMovement : MonoBehaviour
         {
             audioManager = audioManagerObject.GetComponent<AudioManager>();
         }
-
-        gameManager = GameManager.Instance;
-
     }
 
     void Start()
     {
-        gameManager.TriggerObjective("Take the bus to work.");
+        UIManager.Instance.TriggerObjective("Take the bus to work.");
 
         CutsceneController.Instance.StartCutscene(1); // Start the first cutscene
 
