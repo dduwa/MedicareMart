@@ -7,11 +7,9 @@ public class ManagerController : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private Transform[] waypoints;
-    
 
     private int currentWaypointIndex = 0;
     private bool readyToWalk = false;
-
 
     private void Awake()
     {
@@ -34,17 +32,26 @@ public class ManagerController : MonoBehaviour
 
     IEnumerator DelayStandUp()
     {
-        yield return new WaitForSeconds(1);
-        StandUp();
+        yield return new WaitForSeconds(3); // Wait before starting to stand up
     }
 
+    // This method is called via an Animation Event at the end of the stand-up animation
     public void StandUp()
     {
         animator.SetTrigger("StandUp");
-        readyToWalk = true;
+        StartCoroutine(EnableMovementAfterAnimation());
     }
 
-    private void Update()
+    IEnumerator EnableMovementAfterAnimation()
+    {
+        yield return new WaitForSeconds(3);  // Adjust this duration to the length of your stand-up animation
+        readyToWalk = true;
+        navMeshAgent.isStopped = false;
+    }
+
+
+
+private void Update()
     {
         if (readyToWalk && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
         {
@@ -58,11 +65,10 @@ public class ManagerController : MonoBehaviour
                 else
                 {
                     animator.SetBool("IsWalking", false);
-                    readyToWalk = false;
+                    StandUp();
                     gameObject.SetActive(false);
                 }
             }
-            
         }
     }
 
@@ -74,7 +80,4 @@ public class ManagerController : MonoBehaviour
         animator.SetBool("IsWalking", true);
         navMeshAgent.isStopped = false;
     }
-
-
-
 }

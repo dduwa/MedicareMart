@@ -23,28 +23,23 @@ public class StoreDoorController : MonoBehaviour
         doorAnimator.SetBool("isOpen", false); // Set the initial state of the door to closed
     }
 
-  private void OnTriggerEnter(Collider other)
-{
-    Debug.Log("Trigger Entered by: " + other.gameObject.name); // This will log the name of the object that enters the trigger
-
-    if (!isOpen && (other.CompareTag("Player") || other.CompareTag("NPC")))
+    private void OnTriggerEnter(Collider other)
     {
-        doorAnimator.Play("DoorOpen");
-        audioManager.PlaySFX(audioManager.storeDoorbell);
-        isOpen = true;
+        if (!isOpen)
+        {
+            doorAnimator.Play("DoorOpen");
+            audioManager.PlaySFX(audioManager.storeDoorbell);
+            isOpen = true;
+        }
     }
-}
-
 
     private void OnTriggerExit(Collider other)
     {
-        // Check if the collider belongs to a player or an NPC
-        if (isOpen && (other.CompareTag("Player") || other.CompareTag("NPC")))
+        if (isOpen)
         {
             Invoke("CloseDoor", 2f); // Wait for 2 seconds before closing
         }
     }
-
 
     void CloseDoor()
     {

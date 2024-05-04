@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip playButton;
     public AudioClip buttonClick;
     public AudioClip doorIn;
+    public AudioClip doorOut;
     public AudioClip storeDoorbell;
     public AudioClip busArrival;
     public AudioClip busDeparture; // Assuming you meant to include a bus departure sound

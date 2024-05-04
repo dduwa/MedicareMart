@@ -42,7 +42,8 @@ public class Interactable : MonoBehaviour
                 var doorController = GetComponent<StoreDoorControllers>();
                 if (doorController != null)
                 {
-                    doorController.ToggleDoor();
+                    // Assuming you want to toggle the door (open if closed, close if open)
+                    doorController.ToggleDoor(!doorController.isOpen);
                 }
                 else
                 {

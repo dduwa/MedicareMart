@@ -1,16 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using System.Collections;
 
-public class StoreDoorControllers : Interactable // Inherit from Interactable
+public class StoreDoorControllers : Interactable
 {
     public Animator animator;
     AudioManager audioManager;
 
-    public float doorOpenTime = 5.0f;  // Time in seconds the door remains open
-
+    public float doorOpenTime = 5.0f;
     private Coroutine closeDoorCoroutine;
-    private int npcCount = 0; // Track the number of NPCs within the trigger
+    public bool isOpen = false;
+    private int npcCount = 0;
+
+    // Reference to the NavMesh Obstacle component
+    [SerializeField]  private  NavMeshObstacle navMeshObstacle;
 
     private void Awake()
     {
@@ -18,6 +21,13 @@ public class StoreDoorControllers : Interactable // Inherit from Interactable
         if (audioManagerObject != null)
         {
             audioManager = audioManagerObject.GetComponent<AudioManager>();
+        }
+
+        // Get the NavMesh Obstacle component
+        navMeshObstacle = GetComponent<NavMeshObstacle>();
+        if (navMeshObstacle == null)
+        {
+            Debug.LogError("NavMeshObstacle component not found on the door!");
         }
     }
 
@@ -30,25 +40,23 @@ public class StoreDoorControllers : Interactable // Inherit from Interactable
         }
     }
 
-    // Implement the Interact method from the Interactable class
     public override void Interact()
     {
-        bool isOpen = animator.GetBool("IsOpen");
         ToggleDoor(!isOpen);
     }
 
     public void ToggleDoor(bool open)
     {
-        if (animator.GetBool("IsOpen") != open)
+        if (isOpen != open)
         {
+            isOpen = open;
             animator.SetBool("IsOpen", open);
             if (audioManager != null)
             {
-                audioManager.PlaySFX(open ? audioManager.doorIn : audioManager.doorIn);
+                audioManager.PlaySFX(open ? audioManager.doorIn : audioManager.doorOut);
             }
             if (open)
             {
-                // Start or restart the coroutine to close the door after a delay
                 if (closeDoorCoroutine != null)
                 {
                     StopCoroutine(closeDoorCoroutine);
@@ -56,12 +64,18 @@ public class StoreDoorControllers : Interactable // Inherit from Interactable
                 closeDoorCoroutine = StartCoroutine(CloseDoorAfterDelay(doorOpenTime));
             }
         }
+
+        // Enable or disable the NavMesh Obstacle based on door state
+        if (navMeshObstacle != null)
+        {
+            navMeshObstacle.enabled = !open;
+        }
     }
 
     private IEnumerator CloseDoorAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        if (npcCount == 0) // Only close if no NPCs are inside
+        if (npcCount == 0)
         {
             ToggleDoor(false);
         }
@@ -69,8 +83,9 @@ public class StoreDoorControllers : Interactable // Inherit from Interactable
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("NPC")) // Make sure your NPCs have this tag
+        if (other.gameObject.CompareTag("NPC"))
         {
+            Debug.Log("NPC entered trigger zone of the door.");
             npcCount++;
             ToggleDoor(true);
         }
@@ -80,12 +95,14 @@ public class StoreDoorControllers : Interactable // Inherit from Interactable
     {
         if (other.gameObject.CompareTag("NPC"))
         {
+            Debug.Log("NPC exited trigger zone of the door.");
             npcCount--;
             if (npcCount <= 0)
             {
-                npcCount = 0; // Prevents negative count
+                npcCount = 0;
                 ToggleDoor(false);
             }
         }
     }
+
 }
