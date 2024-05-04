@@ -6,7 +6,7 @@ public class Interactable : MonoBehaviour
 {
     public Material highlightMaterial;
     private Material originalMaterial;
-    public enum InteractionType {Talk, OpenDoor }
+    public enum InteractionType {Talk, OpenDoor, ClockIn}
     public InteractionType interactionType;
     public string[] dialogueLines; // For Talk type
     public bool isInteractable = true;
@@ -20,11 +20,6 @@ public class Interactable : MonoBehaviour
     public void SetInteractable(bool state)
     {
         isInteractable = state;  // Update the interactability state
-
-        // Optionally disable collider or other components that trigger interaction
-        //Collider collider = GetComponent<Collider>();
-        //if (collider != null)
-            //collider.enabled = state;
     }
 
     public virtual void Interact()
@@ -50,6 +45,11 @@ public class Interactable : MonoBehaviour
                     Debug.LogError("DoorController component is missing on this object!");
                 }
                 break;
+            case InteractionType.ClockIn:
+                // Trigger gameplay for serving customers
+                DialogueController.Instance.ShowDialogue(dialogueLines, this.GetComponent<Interactable>());
+                StartServingCustomers();
+                break;
         }
     }
 
@@ -63,6 +63,12 @@ public class Interactable : MonoBehaviour
         }
 
         renderer.material = highlight ? highlightMaterial : originalMaterial;
+    }
+
+    void StartServingCustomers()
+    {
+        // Implement gameplay logic here to start serving customers
+        Debug.Log("Gameplay started: Serving customers");
     }
 
 }

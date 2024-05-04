@@ -42,10 +42,13 @@ public class GameManager : MonoBehaviour
     public enum GameState
     {
         MainMenu,
-        GameRunning,
+        OnBus,        // When the player is on the bus
+        InStore,      // When the player is in the store
+        GameRunning,  // General game running state for other gameplay
         GamePaused,
         GameEnded
     }
+
 
     void OnEnable()
     {
@@ -62,31 +65,64 @@ public class GameManager : MonoBehaviour
         firstPersonController = FindObjectOfType<FirstPersonController>();
         if (firstPersonController != null)
         {
-            Debug.Log("FirstPersonController found in the scene");
+            Debug.Log("FirstPersonController found in the scene: " + scene.name);
+            firstPersonController.isPaused = (CurrentGameState == GameState.GamePaused); // Ensure paused state is consistent
         }
         else
         {
-            Debug.Log("FirstPersonController not found in the scene");
+            Debug.Log("FirstPersonController not found in the scene: " + scene.name);
         }
+        UpdateGameStateBasedOnScene(scene.name); // Ensure the game state is updated according to the loaded scene
     }
 
-
-
-    public void StartGame()
+    public void StartGameFromMainMenu()
     {
         if (CurrentGameState == GameState.MainMenu)
         {
-            CurrentGameState = GameState.GameRunning;
-            // Load the game scene or setup the game to start
-            StartCoroutine(WaitForSoundToFinsh("Bus", audioManager.playButton.length));
-            Debug.Log("Game Started");
+            CurrentGameState = GameState.OnBus;
+            StartCoroutine(WaitForSoundToFinish("Bus", audioManager.playButton.length)); // Transition to the bus
+            Debug.Log("Transitioning from Main Menu to Bus");
         }
     }
 
-    IEnumerator WaitForSoundToFinsh(string sceneName, float delay)
+
+
+
+    public void StartGameFromBus()
+    {
+        if (CurrentGameState == GameState.OnBus)
+        {
+            CurrentGameState = GameState.InStore;
+            StartCoroutine(WaitForSoundToFinish("Store", audioManager.playButton.length)); // Transition to the store
+            Debug.Log("Transitioning from Bus to Store");
+        }
+    }
+
+    IEnumerator WaitForSoundToFinish(string sceneName, float delay)
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadSceneAsync(sceneName);
+        UpdateGameStateBasedOnScene(sceneName);
+    }
+
+    private void UpdateGameStateBasedOnScene(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case "BusScene":
+                CurrentGameState = GameState.OnBus;
+                break;
+            case "StoreScene":
+                CurrentGameState = GameState.InStore;
+                break;
+            case "MainGameScene":
+                CurrentGameState = GameState.GameRunning;
+                break;
+            default:
+                Debug.LogError("Unknown scene");
+                break;
+        }
+        Debug.Log("Loaded scene and updated game state: " + sceneName);
     }
 
     public void EndGame()
@@ -149,7 +185,9 @@ public class GameManager : MonoBehaviour
         if (CurrentGameState != GameState.GameRunning)
         {
             // Reset game-specific variables and states
-            // For example, reset score, player health, inventory, etc.
+
+
+
 
             // Load the main game scene (assuming it's named "GameScene" or similar)
             SceneManager.LoadScene("GameScene");
@@ -173,12 +211,14 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame()
     {
-    #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;  // If running in the editor, stop playing
-    #else
-            Application.Quit();  // Quit the application in a build
-    #endif
+#if UNITY_EDITOR
+    UnityEditor.EditorApplication.isPlaying = false;  // If running in the editor, stop playing
+#else
+        Application.Quit();  // Quit the application in a build
+#endif
+        Debug.Log("Game is quitting...");  // This log will confirm the function is called
     }
+
 
 
 }

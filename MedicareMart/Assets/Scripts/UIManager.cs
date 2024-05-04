@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject confirmationDialog; // Assign in the Inspector
     public Text messageText; // Assign in the Inspector
     public Button yesButton, noButton; // Assign in the Inspector
+    public Button resumeButton; // Assign in the Inspector
 
 
     private void Awake()
@@ -68,6 +69,10 @@ public class UIManager : MonoBehaviour
     {
         if (pauseMenuUI != null)
         {
+            resumeButton.onClick.RemoveAllListeners();
+            resumeButton.onClick.AddListener(() => GameManager.Instance.ResumeGame());
+
+
             pauseMenuUI.SetActive(true);
             ToggleCrosshair(false);
             ToggleCursorVisibility(true);

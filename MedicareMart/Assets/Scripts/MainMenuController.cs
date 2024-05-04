@@ -57,7 +57,7 @@ public class MainMenuController : MonoBehaviour
             audioManager.PlaySFX(audioManager.playButton); // Play button sound
         }
 
-        GameManager.Instance.StartGame(); // Start the game
+        GameManager.Instance.StartGameFromMainMenu(); // Start the game
     }
 
     public void ButtonHandlerQuit()
