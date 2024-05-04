@@ -37,12 +37,8 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("AudioManager found: " + (audioManager != null));
-    }
 
-
-
-
-
+        }
     public enum GameState
     {
         MainMenu,
@@ -50,6 +46,31 @@ public class GameManager : MonoBehaviour
         GamePaused,
         GameEnded
     }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        firstPersonController = FindObjectOfType<FirstPersonController>();
+        if (firstPersonController != null)
+        {
+            Debug.Log("FirstPersonController found in the scene");
+        }
+        else
+        {
+            Debug.Log("FirstPersonController not found in the scene");
+        }
+    }
+
+
 
     public void StartGame()
     {
@@ -89,11 +110,17 @@ public class GameManager : MonoBehaviour
             PauseGame();
         }
     }
-
+    public void FPSUnpause()
+    {
+        firstPersonController.isPaused = false;
+    }
     private void PauseGame()
     {
         IsGamePaused = true;
-        firstPersonController.isPaused = true;
+        if (firstPersonController != null)
+        {
+            firstPersonController.isPaused = true;
+        }
         UIManager.Instance.ShowPauseMenu();
         Time.timeScale = 0f;
         AudioListener.pause = true;
@@ -105,11 +132,39 @@ public class GameManager : MonoBehaviour
         if (IsGamePaused)
         {
             IsGamePaused = false;
-            firstPersonController.isPaused = false;
+            if (firstPersonController != null)
+            {
+                firstPersonController.isPaused = false;
+            }
             UIManager.Instance.HidePauseMenu();
             Time.timeScale = 1f;
             AudioListener.pause = false;
             Debug.Log("Game Resumed");
+        }
+    }
+
+    public void RestartGame()
+    {
+        // Reset any game-specific data or states here
+        if (CurrentGameState != GameState.GameRunning)
+        {
+            // Reset game-specific variables and states
+            // For example, reset score, player health, inventory, etc.
+
+            // Load the main game scene (assuming it's named "GameScene" or similar)
+            SceneManager.LoadScene("GameScene");
+
+            // Ensure game is running at normal speed
+            Time.timeScale = 1f;
+            AudioListener.pause = false;
+
+            // Set game state to running
+            CurrentGameState = GameState.GameRunning;
+            Debug.Log("Game restarted");
+        }
+        else
+        {
+            Debug.Log("Game is already running");
         }
     }
 

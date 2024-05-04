@@ -38,13 +38,24 @@ public class PauseMenuController : MonoBehaviour
     }
     public void OnMainMenuButtonPressed()
     {
-        if (GameManager.Instance.IsGamePaused) // Make sure the game is paused before going to main menu
-        {
-            GameManager.Instance.TogglePause(); // Unpause the game or ensure proper game state before switching
-        }
         PlayPauseSound();
+        UIManager.Instance.HidePauseMenu();
+        UIManager.Instance.ShowConfirmationDialog(
+            "Are you sure you want to return to the main menu? All progress will be lost.",
+            ConfirmMainMenu,
+            () => Debug.Log("Main Menu transition cancelled."));
+    }
+
+    private void ConfirmMainMenu()
+    {
+        if (GameManager.Instance.IsGamePaused)
+        {
+            GameManager.Instance.TogglePause(); // Ensure the game is not paused
+        }
+        GameManager.Instance.RestartGame(); // Reset any game state as needed
         SceneManager.LoadSceneAsync("Menu");
     }
+
 
 
 }
