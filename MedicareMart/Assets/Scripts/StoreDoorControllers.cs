@@ -1,19 +1,18 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections;
 
-public class StoreDoorControllers : Interactable
+public class StoreDoorControllers : Interactable // Inherit from Interactable
 {
     public Animator animator;
     AudioManager audioManager;
-
     public float doorOpenTime = 5.0f;
     private Coroutine closeDoorCoroutine;
     public bool isOpen = false;
     private int npcCount = 0;
 
     // Reference to the NavMesh Obstacle component
-    [SerializeField]  private  NavMeshObstacle navMeshObstacle;
+    [SerializeField] private NavMeshObstacle navMeshObstacle;
 
     private void Awake()
     {
@@ -23,7 +22,6 @@ public class StoreDoorControllers : Interactable
             audioManager = audioManagerObject.GetComponent<AudioManager>();
         }
 
-        // Get the NavMesh Obstacle component
         navMeshObstacle = GetComponent<NavMeshObstacle>();
         if (navMeshObstacle == null)
         {
@@ -42,27 +40,20 @@ public class StoreDoorControllers : Interactable
 
     public override void Interact()
     {
-        ToggleDoor(!isOpen);
+        // Player interaction toggles the door state only if no NPCs are within the trigger zone
+        if (npcCount == 0)
+        {
+            ToggleDoor(!isOpen);
+        }
     }
 
     public void ToggleDoor(bool open)
     {
-        if (isOpen != open)
+        isOpen = open;
+        animator.SetBool("IsOpen", open);
+        if (audioManager != null)
         {
-            isOpen = open;
-            animator.SetBool("IsOpen", open);
-            if (audioManager != null)
-            {
-                audioManager.PlaySFX(open ? audioManager.doorIn : audioManager.doorOut);
-            }
-            if (open)
-            {
-                if (closeDoorCoroutine != null)
-                {
-                    StopCoroutine(closeDoorCoroutine);
-                }
-                closeDoorCoroutine = StartCoroutine(CloseDoorAfterDelay(doorOpenTime));
-            }
+            audioManager.PlaySFX(audioManager.doorIn);
         }
 
         // Enable or disable the NavMesh Obstacle based on door state
@@ -72,37 +63,37 @@ public class StoreDoorControllers : Interactable
         }
     }
 
-    private IEnumerator CloseDoorAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (npcCount == 0)
-        {
-            ToggleDoor(false);
-        }
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("NPC"))
+        if (other.CompareTag("NPC"))
         {
-            Debug.Log("NPC entered trigger zone of the door.");
             npcCount++;
-            ToggleDoor(true);
+            if (!isOpen)
+            {
+                ToggleDoor(true);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("NPC"))
+        if (other.CompareTag("NPC"))
         {
-            Debug.Log("NPC exited trigger zone of the door.");
             npcCount--;
             if (npcCount <= 0)
             {
                 npcCount = 0;
-                ToggleDoor(false);
+                StartCoroutine(CloseDoorAfterDelay(doorOpenTime));
             }
         }
     }
 
+    private IEnumerator CloseDoorAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (npcCount == 0) // Only close the door if no NPCs are inside
+        {
+            ToggleDoor(false);
+        }
+    }
 }
