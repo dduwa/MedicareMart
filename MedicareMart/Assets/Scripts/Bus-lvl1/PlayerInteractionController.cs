@@ -12,15 +12,11 @@ public class PlayerInteractionController : MonoBehaviour {
 	public GraphicRaycaster graphicRaycaster;
 	public FirstPersonController firstPersonController;
 
-
-	  // Add these fields to adjust the camera's FOV
+	// Add these fields to adjust the camera's FOV
     [SerializeField] private Camera playerCamera;
 	[SerializeField] private Camera busCam; // Reference to the BusCam camera
 
-  //  [SerializeField] private float sittingFOV = 60f; // FOV value when sitting
     private float originalFOV; // To store the original FOV value
-
-	
 
     void Awake ()
 	{
@@ -32,7 +28,6 @@ public class PlayerInteractionController : MonoBehaviour {
     {
         PhysicsRaycasts ();
 		GraphicsRaycasts ();
-		CheckForSitDownOrStandUpInput ();
     }
      
 	public void ToggleSelectedCursor (bool showSelectedCursor)
@@ -130,21 +125,4 @@ void PhysicsRaycasts()
 		yield return new WaitForSeconds(delay);
 		CutsceneController.Instance.StartCutscene(2); // Assuming CutsceneController is a singleton
 	}
-
-	void CheckForSitDownOrStandUpInput()
-	{
-		if (Input.GetKeyDown(KeyCode.E)) // Assuming 'E' is the key to stand up
-		{
-			StandUp();
-		}
-	}
-
-	void StandUp()
-	{
-		// Re-enable the FirstPersonController to allow movement and looking around
-		firstPersonController.enabled = true;
-	}
-		
-
-
 }

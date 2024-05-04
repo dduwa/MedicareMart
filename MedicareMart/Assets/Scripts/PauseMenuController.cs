@@ -82,12 +82,11 @@ public class PauseMenuController : MonoBehaviour
 
     public void ButtonHandlerMainMenu()
     {
-        //Debug.Log("Settings button pressed");
         if (audioManager != null)
         {
-            //Debug.Log("AudioManager found, playing click sound");
             audioManager.PlaySFX(audioManager.buttonClick); // Play button click sound
         }
+        Time.timeScale = 1f;
         SceneManager.LoadSceneAsync("Menu");
 
     }
