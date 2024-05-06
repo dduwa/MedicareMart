@@ -26,6 +26,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip carGo;
     public AudioClip npcWalk;
     public AudioClip jumpscare;
+    public AudioClip carAlarm;
 
     void Awake()
     {
@@ -65,6 +66,14 @@ public class AudioManager : MonoBehaviour
         if (sfxSource != null && clip != null)
         {
             sfxSource.PlayOneShot(clip);
+        }
+    }
+
+    public void StopSFX()
+    {
+        if (sfxSource != null)
+        {
+            sfxSource.Stop();
         }
     }
 }

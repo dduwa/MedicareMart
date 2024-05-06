@@ -1572,6 +1572,7 @@ MonoBehaviour:
   carGo: {fileID: 8300000, guid: 7a69f76f8feb34c4c8834988e67cfb57, type: 3}
   npcWalk: {fileID: 8300000, guid: 1e7c7a26f2211ce4e82141755a14b2df, type: 3}
   jumpscare: {fileID: 8300000, guid: 72355b8aa2e692e49b5f7010f4a1814f, type: 3}
+  carAlarm: {fileID: 8300000, guid: e8739095b69f1104f8b44172ad052836, type: 3}
 --- !u!4 &1196112558
 Transform:
   m_ObjectHideFlags: 0
