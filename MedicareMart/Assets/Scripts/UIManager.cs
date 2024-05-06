@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,8 +9,8 @@ public class UIManager : MonoBehaviour
 
     public GameObject crosshair;
     public ObjectivesController objectivesManager;
-    public GameObject pauseMenuUI;
-    public GameObject confirmationDialog; // Assign in the Inspector
+    public GameObject pausePanel;
+    public GameObject confirmPanel; // Assign in the Inspector
     public Text messageText; // Assign in the Inspector
     public Button yesButton, noButton; // Assign in the Inspector
     public Button resumeButton; // Assign in the Inspector
@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -32,13 +33,51 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         // Disable the Pause Menu UI GameObject which should be assigned in the inspector.
-        if (pauseMenuUI != null)
-            pauseMenuUI.SetActive(false);
+        if (pausePanel != null)
+            pausePanel.SetActive(false);
 
         // Disable the Confirmation Dialog GameObject which should be assigned in the inspector.
-        if (confirmationDialog != null)
-            confirmationDialog.SetActive(false);
+        if (confirmPanel != null)
+            confirmPanel.SetActive(false);
     }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        AssignUIComponents();
+    }
+
+    private void AssignUIComponents()
+    {
+        objectivesManager = FindObjectOfType<ObjectivesController>();
+        // Assign UI elements; make sure to check if they exist in the scene
+        crosshair = GameObject.Find("Crosshair");
+        pausePanel = GameObject.Find("PausePanel");
+        confirmPanel = GameObject.Find("ConfirmPanel");
+        messageText = GameObject.FindWithTag("MessageText")?.GetComponent<Text>();
+        yesButton = GameObject.FindWithTag("YesButton")?.GetComponent<Button>();
+        noButton = GameObject.FindWithTag("NoButton")?.GetComponent<Button>();
+        resumeButton = GameObject.FindWithTag("ResumeButton")?.GetComponent<Button>();
+
+        // Check each component and log if not found
+        CheckAndLogComponent(crosshair, "Crosshair");
+        CheckAndLogComponent(pausePanel, "PausePanel");
+        CheckAndLogComponent(confirmPanel, "ConfirmPanel");
+        CheckAndLogComponent(messageText, "MessageText");
+        CheckAndLogComponent(yesButton, "YesButton");
+        CheckAndLogComponent(noButton, "NoButton");
+        CheckAndLogComponent(resumeButton, "ResumeButton");
+
+        // Reset UI visibility as needed
+        if (pausePanel != null) pausePanel.SetActive(false);
+        if (confirmPanel != null) confirmPanel.SetActive(false);
+    }
+
+    private void CheckAndLogComponent(UnityEngine.Object component, string name)
+    {
+        if (component == null)
+            Debug.LogError($"UIManager: {name} not found in the scene.");
+    }
+
 
     public void ToggleCrosshair(bool state)
     {
@@ -67,13 +106,13 @@ public class UIManager : MonoBehaviour
 
     public void ShowPauseMenu()
     {
-        if (pauseMenuUI != null)
+        if (pausePanel != null)
         {
             resumeButton.onClick.RemoveAllListeners();
             resumeButton.onClick.AddListener(() => GameManager.Instance.ResumeGame());
 
 
-            pauseMenuUI.SetActive(true);
+            pausePanel.SetActive(true);
             ToggleCrosshair(false);
             ToggleCursorVisibility(true);
         }
@@ -85,9 +124,9 @@ public class UIManager : MonoBehaviour
 
     public void HidePauseMenu()
     {
-        if (pauseMenuUI != null)
+        if (pausePanel != null)
         {
-            pauseMenuUI.SetActive(false);
+            pausePanel.SetActive(false);
             ToggleCrosshair(true);
             ToggleCursorVisibility(false);
         }
@@ -117,7 +156,7 @@ public class UIManager : MonoBehaviour
             HideConfirmationDialog();
         });
 
-        confirmationDialog.SetActive(true);
+        confirmPanel.SetActive(true);
         ToggleCrosshair(false);
         ToggleCursorVisibility(true);
     }
@@ -127,7 +166,7 @@ public class UIManager : MonoBehaviour
     public void HideConfirmationDialog()
     {
         GameManager.Instance.ResumeGame();
-        confirmationDialog.SetActive(false);
+        confirmPanel.SetActive(false);
         ToggleCrosshair(true);
         ToggleCursorVisibility(false);
     }
