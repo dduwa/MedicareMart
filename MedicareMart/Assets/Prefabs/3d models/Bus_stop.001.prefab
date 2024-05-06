@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8316818745430181019}
   - component: {fileID: 8316818745430180996}
   m_Layer: 0
-  m_Name: Bus_stop.001
+  m_Name: Bus_stop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

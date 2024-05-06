@@ -12,6 +12,12 @@ TagManager:
   - Crosshair
   - NPC
   - Door
+  - PausePanel
+  - ConfirmPanel
+  - MessageText
+  - YesButton
+  - NoButton
+  - ResumeButton
   layers:
   - Default
   - TransparentFX

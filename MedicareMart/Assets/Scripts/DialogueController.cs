@@ -13,11 +13,13 @@ public class DialogueController : MonoBehaviour
     public FirstPersonController firstPersonController;
     public ManagerController managerController; // Reference to the ManagerController
     [SerializeField] private Camera playerCamera;
+    public UIManager uiManager;
 
     private string[] dialogueLines;
     private int currentLine = 0;
     private float originalFov;
     private Interactable currentInteractable;
+
 
     void Awake()
     {
@@ -39,7 +41,7 @@ public class DialogueController : MonoBehaviour
     {
 
         currentInteractable = interactable;  // Store the reference to the interactable NPC
-        UIManager.Instance.ToggleCrosshair(false);
+        uiManager.ToggleCrosshair(false);
         dialogueLines = lines;
         currentLine = 0;
         dialogueText.text = dialogueLines[currentLine];
@@ -81,7 +83,7 @@ public class DialogueController : MonoBehaviour
     {
         dialoguePanel.SetActive(false);
         continuePrompt.gameObject.SetActive(false);
-        UIManager.Instance.ToggleCrosshair(true);
+        uiManager.ToggleCrosshair(true);
 
         // Enable the FirstPersonController to unfreeze the player
         firstPersonController.enabled = true;
@@ -99,7 +101,7 @@ public class DialogueController : MonoBehaviour
             managerController.StopTalking(); // End dialogue animations
             managerController.StandUp(); // Stand up after dialogue
         }
-        UIManager.Instance.TriggerObjective("Press T to check tasks, and clock in when ready.");
+        uiManager.TriggerObjective("Press T to check tasks, and clock in when ready.");
     }
 
 

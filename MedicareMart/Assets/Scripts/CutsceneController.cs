@@ -13,6 +13,10 @@ public class CutsceneController : MonoBehaviour
     public Camera busCam;
     public Image ImageToFade { get; private set; }
 
+    public UIManager uiManager;
+
+ 
+
     AudioManager audioManager;
 
     void Awake()
@@ -108,14 +112,14 @@ public class CutsceneController : MonoBehaviour
     {
         // Cutscene for starting the game: Fade from black and toggle crosshair
         yield return new WaitForSeconds(1);
-        FadeImage(ImageToFade, 0, 2, () => UIManager.Instance.ToggleCrosshair(true));
+        FadeImage(ImageToFade, 0, 2, () => uiManager.ToggleCrosshair(true));
     }
 
     IEnumerator CutsceneTwo()
     {
         audioManager.PlaySFX(audioManager.busDeparture);
         Debug.Log("Starting cutscene two, fading to black.");
-        UIManager.Instance.ToggleCrosshair(false);
+        uiManager.ToggleCrosshair(false);
         yield return new WaitForSeconds(2); // Allow SFX to play and not overlap with fading
         FadeImage(ImageToFade, 1, 2, () =>
         {
@@ -136,7 +140,7 @@ public class CutsceneController : MonoBehaviour
         Image imageInNewScene = GameObject.Find("Image").GetComponent<Image>();
         if (imageInNewScene != null)
         {
-            UIManager.Instance.ToggleCrosshair(false);
+            uiManager.ToggleCrosshair(false);
             imageInNewScene.color = new Color(0, 0, 0, 1); // Ensure the image is fully black
             FadeImage(imageInNewScene, 0, 2);  // Fade to transparent
         }

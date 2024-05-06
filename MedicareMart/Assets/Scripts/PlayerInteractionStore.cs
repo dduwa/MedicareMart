@@ -13,6 +13,7 @@ public class PlayerInteractionStore : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     public float interactionDistance = 2f; // Distance within which a player can interact
     private Interactable currentInteractable;
+    public UIManager uIManager;
 
     void Awake()
     {
@@ -23,7 +24,7 @@ public class PlayerInteractionStore : MonoBehaviour
 
     void Start()
     {
-        UIManager.Instance.TriggerObjective("Speak to the manager");
+        uIManager.TriggerObjective("Speak to the manager");
 
     }
 

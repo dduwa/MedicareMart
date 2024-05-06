@@ -9,10 +9,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public GameState CurrentGameState { get; private set; } = GameState.MainMenu;
-    private AudioManager audioManager; // Reference to the AudioManager
     [SerializeField] public FirstPersonController firstPersonController;
     public bool IsGamePaused { get; private set; }
-    // private GameObject pauseMenuUI;
+    public UIManager uiManager;
+
     void Awake()
     {
         Debug.Log("GameManager Awake() called");
@@ -26,19 +26,9 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
-        else
-        {
-            Debug.LogWarning("AudioManager not found in the scene");
         }
 
-        Debug.Log("AudioManager found: " + (audioManager != null));
 
-        }
     public enum GameState
     {
         MainMenu,
@@ -80,20 +70,17 @@ public class GameManager : MonoBehaviour
         if (CurrentGameState == GameState.MainMenu)
         {
             CurrentGameState = GameState.OnBus;
-            StartCoroutine(WaitForSoundToFinish("Bus", audioManager.playButton.length)); // Transition to the bus
+            StartCoroutine(WaitForSoundToFinish("Bus", AudioManager.Instance.playButton.length)); // Transition to the bus
             Debug.Log("Transitioning from Main Menu to Bus");
         }
     }
-
-
-
 
     public void StartGameFromBus()
     {
         if (CurrentGameState == GameState.OnBus)
         {
             CurrentGameState = GameState.InStore;
-            StartCoroutine(WaitForSoundToFinish("Store", audioManager.playButton.length)); // Transition to the store
+            StartCoroutine(WaitForSoundToFinish("Store", AudioManager.Instance.playButton.length)); // Transition to the store
             Debug.Log("Transitioning from Bus to Store");
         }
     }
@@ -157,7 +144,7 @@ public class GameManager : MonoBehaviour
         {
             firstPersonController.isPaused = true;
         }
-        UIManager.Instance.ShowPauseMenu();
+        uiManager.ShowPauseMenu();
         Time.timeScale = 0f;
         AudioListener.pause = true;
         Debug.Log("Game Paused");
@@ -172,7 +159,7 @@ public class GameManager : MonoBehaviour
             {
                 firstPersonController.isPaused = false;
             }
-            UIManager.Instance.HidePauseMenu();
+            uiManager.HidePauseMenu();
             Time.timeScale = 1f;
             AudioListener.pause = false;
             Debug.Log("Game Resumed");

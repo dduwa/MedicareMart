@@ -8,6 +8,8 @@ public class MainMenuController : MonoBehaviour
     private AudioManager audioManager; // Reference to the AudioManager
     private Coroutine coroutine;
     public GameObject popup; // Reference to the Popup GameObject
+    public UIManager uIManager;
+
 
     private void Awake()
     {
@@ -24,9 +26,9 @@ public class MainMenuController : MonoBehaviour
             popup.SetActive(false);
         }
 
-        if (UIManager.Instance != null)
+        if (uIManager != null)
         {
-            UIManager.Instance.ToggleCursorVisibility(true);
+            uIManager.ToggleCursorVisibility(true);
         }
     }
 

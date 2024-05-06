@@ -5,19 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour
 {
-    AudioManager audioManager;
-
-    private void Awake()
-    {
-        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
-    }
-
-
-
+    public UIManager uIManager;
     // Update is called once per frame
     void Update()
     {
@@ -31,16 +19,14 @@ public class PauseMenuController : MonoBehaviour
 
     void PlayPauseSound()
     {
-        if (audioManager != null)
-        {
-            audioManager.PlaySFX(audioManager.buttonClick);
-        }
+       AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
+
     }
     public void OnMainMenuButtonPressed()
     {
         PlayPauseSound();
-        UIManager.Instance.HidePauseMenu();
-        UIManager.Instance.ShowConfirmationDialog(
+        uIManager.HidePauseMenu();
+        uIManager.ShowConfirmationDialog(
             "Are you sure you want to return to the main menu? All progress will be lost.",
             ConfirmMainMenu,
             () => Debug.Log("Main Menu transition cancelled."));
