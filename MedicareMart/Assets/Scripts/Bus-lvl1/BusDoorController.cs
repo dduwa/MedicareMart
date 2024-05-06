@@ -5,9 +5,7 @@ using UnityEngine;
 public class BusDoorController : MonoBehaviour
 {
     Animator animator;
-    public UIManager uIManager;
-
-
+  
 
     void Start()
     {
@@ -16,7 +14,7 @@ public class BusDoorController : MonoBehaviour
 
     public void OpenDoor()
     {
-        uIManager.TriggerObjective("Pick a seat and sit down.");
+        UIManager.Instance.TriggerObjective("Pick a seat and sit down.");
         animator.SetBool("isOpen", false);
    
     }
