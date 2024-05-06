@@ -1684,7 +1684,7 @@ MonoBehaviour:
   busDeparture: {fileID: 8300000, guid: 8af05a155ef4c534ba5fdd88b597fcf2, type: 3}
   busEngine: {fileID: 8300000, guid: 6ea07b24ed5b8694bab5f9eb6ead6416, type: 3}
   busHorn: {fileID: 8300000, guid: 1d5f9098e6373de48a655b1bae82de19, type: 3}
-  carGo: {fileID: 0}
+  carGo: {fileID: 8300000, guid: 9fa7ba4be3b9af046a91280d5754b725, type: 3}
 --- !u!4 &1196112558
 Transform:
   m_ObjectHideFlags: 0

@@ -9,10 +9,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public GameState CurrentGameState { get; private set; } = GameState.MainMenu;
-    private AudioManager audioManager; // Reference to the AudioManager
     [SerializeField] public FirstPersonController firstPersonController;
     public bool IsGamePaused { get; private set; }
-    // private GameObject pauseMenuUI;
+
     void Awake()
     {
         Debug.Log("GameManager Awake() called");
@@ -25,20 +24,9 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
 
-        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
-        else
-        {
-            Debug.LogWarning("AudioManager not found in the scene");
-        }
 
-        Debug.Log("AudioManager found: " + (audioManager != null));
-
-        }
     public enum GameState
     {
         MainMenu,
@@ -80,12 +68,10 @@ public class GameManager : MonoBehaviour
         if (CurrentGameState == GameState.MainMenu)
         {
             CurrentGameState = GameState.OnBus;
-            StartCoroutine(WaitForSoundToFinish("Bus", audioManager.playButton.length)); // Transition to the bus
+            StartCoroutine(WaitForSoundToFinish("Bus", AudioManager.Instance.playButton.length)); // Transition to the bus
             Debug.Log("Transitioning from Main Menu to Bus");
         }
     }
-
-
 
 
     public void StartGameFromBus()
@@ -93,7 +79,7 @@ public class GameManager : MonoBehaviour
         if (CurrentGameState == GameState.OnBus)
         {
             CurrentGameState = GameState.InStore;
-            StartCoroutine(WaitForSoundToFinish("Store", audioManager.playButton.length)); // Transition to the store
+            StartCoroutine(WaitForSoundToFinish("Store", AudioManager.Instance.playButton.length)); // Transition to the store
             Debug.Log("Transitioning from Bus to Store");
         }
     }
@@ -187,8 +173,6 @@ public class GameManager : MonoBehaviour
             // Reset game-specific variables and states
 
 
-
-
             // Load the main game scene (assuming it's named "GameScene" or similar)
             SceneManager.LoadScene("GameScene");
 
@@ -206,19 +190,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-
-
     public void QuitGame()
     {
+        Debug.Log("Game is preparing to quit...");
+        StartCoroutine(WaitForQuitSound(AudioManager.Instance.buttonClick.length));
+    }
+
+    IEnumerator WaitForQuitSound(float delay)
+    {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
+        yield return new WaitForSeconds(delay);
+
+        Debug.Log("Game is quitting...");
+
 #if UNITY_EDITOR
-    UnityEditor.EditorApplication.isPlaying = false;  // If running in the editor, stop playing
+        UnityEditor.EditorApplication.isPlaying = false;  // If running in the editor, stop playing
 #else
         Application.Quit();  // Quit the application in a build
 #endif
-        Debug.Log("Game is quitting...");  // This log will confirm the function is called
     }
-
-
-
 }

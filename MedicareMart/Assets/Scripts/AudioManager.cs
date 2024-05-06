@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance { get; private set; }
+
+
     [Header("Audio Sources")]
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
@@ -16,29 +20,43 @@ public class AudioManager : MonoBehaviour
     public AudioClip doorIn;
     public AudioClip storeDoorbell;
     public AudioClip busArrival;
-    public AudioClip busDeparture; // Assuming you meant to include a bus departure sound
+    public AudioClip busDeparture;
     public AudioClip busEngine;
     public AudioClip busHorn;
     public AudioClip carGo;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        // Check if there's a GameObject with the "Menu" tag present in the scene
-        if (GameObject.FindGameObjectWithTag("Menu") != null)
+        if (Instance == null)
         {
-            // If a Menu object is found, set the menu background music and play it
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Ensures this object persists across scenes
+            SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to the sceneLoaded event
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Menu") // Check if the loaded scene is the menu
+        {
             musicSource.clip = menuBackground;
             musicSource.Play();
         }
         else
         {
-            // Otherwise, play the game background music
-            musicSource.clip = gameBackground;
+            musicSource.clip = gameBackground; // Change to another background music or stop music
             musicSource.Play();
         }
     }
 
+    void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded; // Unsubscribe from the event when the AudioManager is destroyed
+    }
 
     public void PlaySFX(AudioClip clip)
     {

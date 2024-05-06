@@ -5,18 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    private AudioManager audioManager; // Reference to the AudioManager
     private Coroutine coroutine;
     public GameObject popup; // Reference to the Popup GameObject
 
     private void Awake()
     {
-        // Find the AudioManager object in the scene and assign it to the audioManager variable.
-        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
 
         // Initialize Popup as not active when the scene starts
         if (popup != null)
@@ -35,7 +28,7 @@ public class MainMenuController : MonoBehaviour
     {
         if (popup != null)
         {
-            audioManager.PlaySFX(audioManager.buttonClick);
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
             popup.SetActive(true);
         }
     }
@@ -45,39 +38,23 @@ public class MainMenuController : MonoBehaviour
     {
         if (popup != null)
         {
-            audioManager.PlaySFX(audioManager.buttonClick);
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
             popup.SetActive(false);
         }
     }
 
     public void ButtonHandlerPlay()
     {
-        if (audioManager != null)
-        {
-            audioManager.PlaySFX(audioManager.playButton); // Play button sound
-        }
-
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.playButton); // Play button sound
+       
         GameManager.Instance.StartGameFromMainMenu(); // Start the game
     }
 
     public void ButtonHandlerQuit()
     {
-        if (audioManager != null)
-        {
-            // Play the button click sound.
-            audioManager.PlaySFX(audioManager.buttonClick);
-            // Start a coroutine to quit after the sound has finished playing.
-            StartCoroutine(WaitForSoundToFinish(audioManager.buttonClick.length));
-        }
-        else
-        {
-            GameManager.Instance.QuitGame();
-        }
-    }
-
-    IEnumerator WaitForSoundToFinish(float delay)
-    {
-        // Wait for the length of the clip to ensure it has finished playing.
-        yield return new WaitForSeconds(delay);
+        // Play the button click sound.
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
+        GameManager.Instance.QuitGame();
+       
     }
 }

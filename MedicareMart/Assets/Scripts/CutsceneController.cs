@@ -13,7 +13,7 @@ public class CutsceneController : MonoBehaviour
     public Camera busCam;
     public Image ImageToFade { get; private set; }
 
-    AudioManager audioManager;
+    
 
     void Awake()
     {
@@ -27,12 +27,6 @@ public class CutsceneController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        // Find the AudioManager in the scene and get the AudioManager component
-        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
     }
 
     void Start()
@@ -113,7 +107,7 @@ public class CutsceneController : MonoBehaviour
 
     IEnumerator CutsceneTwo()
     {
-        audioManager.PlaySFX(audioManager.busDeparture);
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.busDeparture);
         Debug.Log("Starting cutscene two, fading to black.");
         UIManager.Instance.ToggleCrosshair(false);
         yield return new WaitForSeconds(2); // Allow SFX to play and not overlap with fading

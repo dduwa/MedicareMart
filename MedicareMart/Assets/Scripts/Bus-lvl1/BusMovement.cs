@@ -16,16 +16,6 @@ public class BusMovement : MonoBehaviour
 
     public Camera busCam; // Reference to the BusCam camera
 
-    AudioManager audioManager;
-
-    private void Awake()
-    {
-        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
-    }
 
     void Start()
     {
@@ -64,7 +54,7 @@ public class BusMovement : MonoBehaviour
                 if (waypointIndex == 0) // Correctly check for the first waypoint
                 {
                     busDriverController.Driving(); // Set the bus driver to driving
-                    audioManager.PlaySFX(audioManager.busArrival); // Sound for bus starting
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.busArrival); // Sound for bus starting
                 }
 
                 if (waypointIndex == waypoints.Length - 1)

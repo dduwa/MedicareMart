@@ -7,17 +7,6 @@ public class StoreDoorController : MonoBehaviour
  public Animator doorAnimator;
     private bool isOpen = false;
 
-    AudioManager audioManager;
-
-    private void Awake()
-    {
-        GameObject audioManagerObject = GameObject.FindGameObjectWithTag("Audio");
-        if (audioManagerObject != null)
-        {
-            audioManager = audioManagerObject.GetComponent<AudioManager>();
-        }
-
-    }
     void Start()
     {
         doorAnimator.SetBool("isOpen", false); // Set the initial state of the door to closed
@@ -28,7 +17,7 @@ public class StoreDoorController : MonoBehaviour
         if (!isOpen)
         {
             doorAnimator.Play("DoorOpen");
-            audioManager.PlaySFX(audioManager.storeDoorbell);
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.storeDoorbell);
             isOpen = true;
         }
     }
