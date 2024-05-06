@@ -8110,26 +8110,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2568059917987331910, guid: 21598b3d01afc0d459560311526025de, type: 3}
-      propertyPath: m_Name
-      value: ConfirmPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 2568059918752595634, guid: 21598b3d01afc0d459560311526025de, type: 3}
-      propertyPath: m_TagString
-      value: NoButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 2568059918805692285, guid: 21598b3d01afc0d459560311526025de, type: 3}
-      propertyPath: m_Name
-      value: MessageText
-      objectReference: {fileID: 0}
-    - target: {fileID: 2568059918805692285, guid: 21598b3d01afc0d459560311526025de, type: 3}
-      propertyPath: m_TagString
-      value: MessageText
-      objectReference: {fileID: 0}
-    - target: {fileID: 2568059918975981609, guid: 21598b3d01afc0d459560311526025de, type: 3}
-      propertyPath: m_TagString
-      value: YesButton
-      objectReference: {fileID: 0}
     - target: {fileID: 2568059919230308690, guid: 21598b3d01afc0d459560311526025de, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -8766,7 +8746,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3857483302708369406, guid: 9893655c71ebc7f4db9566de602c81e3, type: 3}
       propertyPath: m_Name
-      value: Crosshair
+      value: Canvas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9893655c71ebc7f4db9566de602c81e3, type: 3}
@@ -9042,10 +9022,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1324265358}
-    - target: {fileID: 4416500136335095753, guid: b326a5badc7832c4282a26c17c631c88, type: 3}
-      propertyPath: m_TagString
-      value: ResumeButton
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b326a5badc7832c4282a26c17c631c88, type: 3}
 --- !u!4 &4582277379082201578
