@@ -17,7 +17,9 @@ public class EndingManager : MonoBehaviour
 
     private void Start()
     {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.playButton);
         UpdateEndingText();
+      
     }
 
     void UpdateEndingText()

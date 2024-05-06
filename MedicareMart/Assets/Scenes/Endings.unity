@@ -750,7 +750,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2136596990}
         m_TargetAssemblyTypeName: EndingManager, Assembly-CSharp
-        m_MethodName: ButtonHandlerRestart
+        m_MethodName: ButtonHandlerQuit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -883,7 +883,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2136596990}
         m_TargetAssemblyTypeName: EndingManager, Assembly-CSharp
-        m_MethodName: ButtonHandlerQuit
+        m_MethodName: ButtonHandlerRestart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

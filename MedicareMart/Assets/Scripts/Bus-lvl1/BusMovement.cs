@@ -21,12 +21,18 @@ public class BusMovement : MonoBehaviour
     {
         UIManager.Instance.TriggerObjective("Take the bus to work.");
 
-        CutsceneController.Instance.StartCutscene(1); // Start the first cutscene
+        BeginCutsceneAfterDelay(2); // Start the first cutscene
 
          // Parent the BusCam to this bus GameObject
         busCam.transform.SetParent(transform, false);
         busCam.transform.localPosition = Vector3.zero; // Set the local position to zero to keep the camera at the pivot point of the bus
         busCam.transform.localRotation = Quaternion.identity; // Optionally, reset the local rotation if needed
+    }
+
+    IEnumerator BeginCutsceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        CutsceneController.Instance.StartCutscene(1); 
     }
     void Update()
     {

@@ -37,12 +37,6 @@ public class GameManager : MonoBehaviour
         GameEnded
     }
 
-    public void SetGameState(GameState newState)
-    {
-        Debug.Log($"Game state changing from {CurrentGameState} to {newState}");
-        CurrentGameState = newState;
-    }
-
 
     void OnEnable()
     {
@@ -67,26 +61,20 @@ public class GameManager : MonoBehaviour
             Debug.Log("FirstPersonController not found in the scene: " + scene.name);
         }
         UpdateGameStateBasedOnScene(scene.name); 
-
-        if (scene.name == "Endings") 
-        {
-           
-            CutsceneController.Instance.StartCutscene(3);
-        }
     }
+
+   
 
     void UpdateGameStateBasedOnScene(string sceneName)
     {
         switch (sceneName)
         {
-            case "BusScene":
-                CurrentGameState = GameState.OnBus;
+            case "MainMenu":
+                CurrentGameState = GameState.MainMenu;
                 break;
-            case "StoreScene":
-                CurrentGameState = GameState.InStore;
-                break;
-            case "MainGameScene":
-                CurrentGameState = GameState.GameRunning;
+            case "Bus":
+            case "Store":
+                CurrentGameState = GameState.GameRunning;  // Treat both scenes as part of general gameplay
                 break;
             case "Endings":
                 CurrentGameState = GameState.GameEnded;
@@ -97,6 +85,7 @@ public class GameManager : MonoBehaviour
         }
         Debug.Log($"Loaded scene {sceneName}, updated game state to {CurrentGameState}");
     }
+
 
 
     public void StartGameFromMainMenu()
@@ -221,20 +210,14 @@ public class GameManager : MonoBehaviour
         // Reset any game-specific data or states here
         if (CurrentGameState != GameState.GameRunning)
         {
-
-            foreach (var source in FindObjectsOfType<AudioSource>())
-            {
-                source.Stop();
-            }
             ScoreManager.Instance.ResetScore();
 
             CurrentGameState = GameState.MainMenu;
 
             SceneManager.LoadSceneAsync("Menu");
 
-            // Ensure game is running at normal speed
             Time.timeScale = 1f;
-            AudioListener.pause = false;
+           AudioListener.pause = false;
 
             Debug.Log("Game restarted to initial state");
 
