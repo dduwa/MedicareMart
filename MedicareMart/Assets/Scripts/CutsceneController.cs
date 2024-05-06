@@ -140,11 +140,4 @@ public class CutsceneController : MonoBehaviour
         }
     }
 
-
-    IEnumerator LoadSceneAfterFade(string sceneName)
-    {
-        yield return new WaitForSeconds(2); // Wait for the fade to complete
-        SceneManager.LoadScene(sceneName);
-    }
-
 }

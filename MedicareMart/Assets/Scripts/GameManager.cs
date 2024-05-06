@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
         UpdateGameStateBasedOnScene(scene.name); // Ensure the game state is updated according to the loaded scene
     }
 
+ 
+    
     public void StartGameFromMainMenu()
     {
         if (CurrentGameState == GameState.MainMenu)

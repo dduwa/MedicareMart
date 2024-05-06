@@ -4103,7 +4103,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1134547404}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1134547406
 Camera:
   m_ObjectHideFlags: 0
@@ -5345,7 +5345,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442787443}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1442787445
 Camera:
   m_ObjectHideFlags: 0
@@ -9228,6 +9228,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4891502034570900230, guid: ecd0e68334dcd674490e54f8ece6dfee, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4891502035052321186, guid: ecd0e68334dcd674490e54f8ece6dfee, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -9320,6 +9324,14 @@ PrefabInstance:
       propertyPath: crosshair
       value: 
       objectReference: {fileID: 567392539}
+    - target: {fileID: 4891502035052321188, guid: ecd0e68334dcd674490e54f8ece6dfee, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1940
+      objectReference: {fileID: 0}
+    - target: {fileID: 4891502035052321188, guid: ecd0e68334dcd674490e54f8ece6dfee, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 4891502035052321190, guid: ecd0e68334dcd674490e54f8ece6dfee, type: 3}
       propertyPath: m_Name
       value: cutscene

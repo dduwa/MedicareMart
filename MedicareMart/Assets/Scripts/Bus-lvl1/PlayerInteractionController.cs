@@ -11,6 +11,7 @@ public class PlayerInteractionController : MonoBehaviour {
 	public Image crosshairSelected;
 	public GraphicRaycaster graphicRaycaster;
 	public FirstPersonController firstPersonController;
+ 
 
 	// Add these fields to adjust the camera's FOV
     [SerializeField] private Camera playerCamera;
@@ -53,8 +54,10 @@ void PhysicsRaycasts()
             ToggleSelectedCursor(true); // Show that the seat is interactable
             if (Input.GetMouseButtonDown(0)) // On click, sit down or stand up
             {
+
                 SitDown(hit.transform); // Pass the transform of the seat to sit down on
-            }
+				UIManager.Instance.DisableObjectivePanel(); // Disable the objective panel
+                }
         }
         else
         {

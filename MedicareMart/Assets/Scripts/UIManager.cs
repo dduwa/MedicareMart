@@ -104,6 +104,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void DisableObjectivePanel()
+    {
+        if (objectivesManager != null)
+        {
+            objectivesManager.disableObjectivePanel();
+        }
+    }
+
     public void ShowPauseMenu()
     {
         if (pausePanel != null)

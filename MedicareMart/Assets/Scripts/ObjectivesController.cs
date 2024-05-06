@@ -37,5 +37,10 @@ public class ObjectivesController : MonoBehaviour
         objectives.Clear();
     }
 
+    public void disableObjectivePanel()
+    {
+        objectivePanel.SetActive(false);
+    }
+
 
 }
