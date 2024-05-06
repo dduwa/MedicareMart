@@ -37,6 +37,12 @@ public class GameManager : MonoBehaviour
         GameEnded
     }
 
+    public void SetGameState(GameState newState)
+    {
+        Debug.Log($"Game state changing from {CurrentGameState} to {newState}");
+        CurrentGameState = newState;
+    }
+
 
     void OnEnable()
     {
@@ -152,13 +158,19 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        Debug.Log($"Attempting to end game from state: {CurrentGameState}");
         if (CurrentGameState == GameState.GameRunning)
         {
             CurrentGameState = GameState.GameEnded;
-            Debug.Log("Game Ended");
+            Debug.Log("Game Ended, loading endings scene.");
             SceneManager.LoadSceneAsync("Endings");  // Load the ending scene
         }
+        else
+        {
+            Debug.Log("EndGame called, but game state is not running.");
+        }
     }
+
 
     public void TogglePause()
     {
