@@ -37,7 +37,7 @@ public class DialogueController : MonoBehaviour
 
     public void ShowDialogue(string[] lines, Interactable interactable)
     {
-
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.jumpscare); // Play dialogue start sound
         currentInteractable = interactable;  // Store the reference to the interactable NPC
         UIManager.Instance.ToggleCrosshair(false);
         dialogueLines = lines;

@@ -35,7 +35,6 @@ public class ManagerController : MonoBehaviour
         yield return new WaitForSeconds(3); // Wait before starting to stand up
     }
 
-    // This method is called via an Animation Event at the end of the stand-up animation
     public void StandUp()
     {
         animator.SetTrigger("StandUp");
@@ -75,7 +74,7 @@ private void Update()
     private void MoveToNextWaypoint()
     {
         if (!readyToWalk) return;
-
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.npcWalk);
         navMeshAgent.SetDestination(waypoints[currentWaypointIndex].position);
         animator.SetBool("IsWalking", true);
         navMeshAgent.isStopped = false;

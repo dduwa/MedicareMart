@@ -24,6 +24,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip busEngine;
     public AudioClip busHorn;
     public AudioClip carGo;
+    public AudioClip npcWalk;
+    public AudioClip jumpscare;
 
     void Awake()
     {
