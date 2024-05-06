@@ -8,7 +8,7 @@ public class Interactable : MonoBehaviour
     private Material originalMaterial;
     public enum InteractionType {Talk, OpenDoor, ClockIn}
     public InteractionType interactionType;
-    public string[] dialogueLines; // For Talk type
+    public DialogueLine[] dialogueLines; // For Talk type
     public bool isInteractable = true;
 
     void Start()
@@ -30,26 +30,30 @@ public class Interactable : MonoBehaviour
         switch (interactionType)
         {
             case InteractionType.Talk:
-                DialogueController.Instance.ShowDialogue(dialogueLines, this.GetComponent<Interactable>());
+                DialogueController.Instance.ShowDialogue(new List<DialogueLine>(dialogueLines), this.GetComponent<Interactable>());
                 break;
             case InteractionType.OpenDoor:
                 // Handle door interaction
-                var doorController = GetComponent<StoreDoorControllers>();
-                if (doorController != null)
-                {
-                    // Assuming you want to toggle the door (open if closed, close if open)
-                    doorController.ToggleDoor(!doorController.isOpen);
-                }
-                else
-                {
-                    Debug.LogError("DoorController component is missing on this object!");
-                }
+                ToggleDoor();
                 break;
             case InteractionType.ClockIn:
                 // Trigger gameplay for serving customers
-                DialogueController.Instance.ShowDialogue(dialogueLines, this.GetComponent<Interactable>());
+                DialogueController.Instance.ShowDialogue(new List<DialogueLine>(dialogueLines), this);
                 StartServingCustomers();
                 break;
+        }
+    }
+
+    void ToggleDoor()
+    {
+        var doorController = GetComponent<StoreDoorControllers>();
+        if (doorController != null)
+        {
+            doorController.ToggleDoor(!doorController.isOpen);
+        }
+        else
+        {
+            Debug.LogError("DoorController component is missing on this object!");
         }
     }
 
@@ -67,7 +71,6 @@ public class Interactable : MonoBehaviour
 
     void StartServingCustomers()
     {
-        // Implement gameplay logic here to start serving customers
         Debug.Log("Gameplay started: Serving customers");
     }
 

@@ -44,4 +44,11 @@ public class Customer : MonoBehaviour
             // Trigger any dialogue or interaction here
         }
     }
+
+    public void SetDestination(Transform destination)
+    {
+        targetDestination = destination;
+        MoveToTarget();
+    }
+
 }
