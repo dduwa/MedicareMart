@@ -661,7 +661,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ???
+  m_Text: 'controls
+
+'
 --- !u!222 &311027375
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1179,7 +1181,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.009433985, g: 0.009433985, b: 0.009433985, a: 1}
+    m_NormalColor: {r: 0.5411765, g: 1, b: 0.5764706, a: 1}
     m_HighlightedColor: {r: 1, g: 1, b: 1, a: 1}
     m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2088,9 +2090,9 @@ MonoBehaviour:
     To Run - Shift
 
     To Interact
-    - E
+    - LMB
 
-    To Grab - LMB
+    For Dialogue Choices - 1 and 2
 
     To Pause Game - Esc'
 --- !u!222 &1705052111

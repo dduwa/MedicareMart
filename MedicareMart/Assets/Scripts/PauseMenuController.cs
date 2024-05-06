@@ -25,6 +25,7 @@ public class PauseMenuController : MonoBehaviour
     }
     public void OnMainMenuButtonPressed()
     {
+        
         PlayPauseSound();
         UIManager.Instance.HidePauseMenu();
         UIManager.Instance.ShowConfirmationDialog(

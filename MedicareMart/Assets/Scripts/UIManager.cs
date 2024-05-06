@@ -155,6 +155,7 @@ public class UIManager : MonoBehaviour
             Debug.Log("Yes button clicked");
             onConfirm?.Invoke();
             HideConfirmationDialog();
+            GameManager.Instance.RestartGame();
         });
 
         noButton.onClick.RemoveAllListeners();

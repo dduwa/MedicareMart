@@ -130,7 +130,8 @@ public class DialogueController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && dialoguePanel.activeSelf)
+        // Check if the dialogue panel is active and if it's appropriate to advance the dialogue
+        if (Input.GetKeyDown(KeyCode.E) && dialoguePanel.activeSelf && !IsOptionActive())
         {
             AdvanceDialogue();
         }
@@ -139,9 +140,9 @@ public class DialogueController : MonoBehaviour
 
     private void AdvanceDialogue()
     {
-        currentLine++;
-        if (currentLine < currentDialogue.Count)
+        if (currentLine + 1 < currentDialogue.Count)
         {
+            currentLine++;
             ShowCurrentLine();
         }
         else
@@ -149,6 +150,20 @@ public class DialogueController : MonoBehaviour
             HideDialogue();
         }
     }
+
+    // Check if any choice buttons are currently active
+    private bool IsOptionActive()
+    {
+        foreach (var button in choiceButtons)
+        {
+            if (button.gameObject.activeSelf)
+            {
+                return true;  // Return true if any button is active
+            }
+        }
+        return false;  // No buttons are active
+    }
+
 
     private void HideDialogue()
     {
@@ -173,6 +188,8 @@ public class DialogueController : MonoBehaviour
             managerController.StandUp(); // Stand up after dialogue
         }
         UIManager.Instance.TriggerObjective("Press T to check tasks, and clock in when ready.");
+        GameManager.Instance.DialogueEnded();
+
     }
 
 

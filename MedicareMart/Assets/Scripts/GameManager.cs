@@ -60,11 +60,39 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("FirstPersonController not found in the scene: " + scene.name);
         }
-        UpdateGameStateBasedOnScene(scene.name); // Ensure the game state is updated according to the loaded scene
+        UpdateGameStateBasedOnScene(scene.name); 
+
+        if (scene.name == "Endings") 
+        {
+           
+            CutsceneController.Instance.StartCutscene(3);
+        }
     }
 
- 
-    
+    void UpdateGameStateBasedOnScene(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case "BusScene":
+                CurrentGameState = GameState.OnBus;
+                break;
+            case "StoreScene":
+                CurrentGameState = GameState.InStore;
+                break;
+            case "MainGameScene":
+                CurrentGameState = GameState.GameRunning;
+                break;
+            case "Endings":
+                CurrentGameState = GameState.GameEnded;
+                break;
+            default:
+                Debug.LogError($"Unknown scene: {sceneName}");
+                break;
+        }
+        Debug.Log($"Loaded scene {sceneName}, updated game state to {CurrentGameState}");
+    }
+
+
     public void StartGameFromMainMenu()
     {
         if (CurrentGameState == GameState.MainMenu)
@@ -93,24 +121,33 @@ public class GameManager : MonoBehaviour
         UpdateGameStateBasedOnScene(sceneName);
     }
 
-    private void UpdateGameStateBasedOnScene(string sceneName)
+    public void EvaluateEndings()
     {
-        switch (sceneName)
+        int finalScore = ScoreManager.Instance.GetScore();
+        Debug.Log($"Final Score: {finalScore}, evaluating endings...");
+        if (finalScore == 0)
         {
-            case "BusScene":
-                CurrentGameState = GameState.OnBus;
-                break;
-            case "StoreScene":
-                CurrentGameState = GameState.InStore;
-                break;
-            case "MainGameScene":
-                CurrentGameState = GameState.GameRunning;
-                break;
-            default:
-                Debug.LogError("Unknown scene");
-                break;
+            Debug.Log("Score is 0. Ending game.");
+            EndGame();
         }
-        Debug.Log("Loaded scene and updated game state: " + sceneName);
+        else
+        {
+            Debug.Log("Score is not 0. Continuing game normally.");
+        }   
+    }
+
+    public void DialogueEnded()
+    {
+        int score = ScoreManager.Instance.GetScore();
+        if (score == 0)
+        {
+            Debug.Log("Score is 0 after dialogue. Ending game.");
+            EndGame();
+        }
+        else
+        {
+            Debug.Log("Dialogue ended with score " + score + ". Continuing game normally.");
+        }
     }
 
     public void EndGame()
@@ -118,8 +155,8 @@ public class GameManager : MonoBehaviour
         if (CurrentGameState == GameState.GameRunning)
         {
             CurrentGameState = GameState.GameEnded;
-            // Handle game ending, such as saving scores, showing end game UI, etc.
             Debug.Log("Game Ended");
+            SceneManager.LoadSceneAsync("Endings");  // Load the ending scene
         }
     }
 
@@ -172,19 +209,23 @@ public class GameManager : MonoBehaviour
         // Reset any game-specific data or states here
         if (CurrentGameState != GameState.GameRunning)
         {
-            // Reset game-specific variables and states
 
+            foreach (var source in FindObjectsOfType<AudioSource>())
+            {
+                source.Stop();
+            }
+            ScoreManager.Instance.ResetScore();
 
-            // Load the main game scene (assuming it's named "GameScene" or similar)
-            SceneManager.LoadScene("GameScene");
+            CurrentGameState = GameState.MainMenu;
+
+            SceneManager.LoadSceneAsync("Menu");
 
             // Ensure game is running at normal speed
             Time.timeScale = 1f;
             AudioListener.pause = false;
 
-            // Set game state to running
-            CurrentGameState = GameState.GameRunning;
-            Debug.Log("Game restarted");
+            Debug.Log("Game restarted to initial state");
+
         }
         else
         {
@@ -211,4 +252,6 @@ public class GameManager : MonoBehaviour
         Application.Quit();  // Quit the application in a build
 #endif
     }
+
+
 }
