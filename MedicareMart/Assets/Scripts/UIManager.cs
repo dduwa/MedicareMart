@@ -104,11 +104,24 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void CompleteObjective(string objective)
+    {
+        if (objectivesManager != null)
+        {
+            Debug.Log("Completing Objective: " + objective);
+            objectivesManager.MarkObjectiveComplete(objective);
+        }
+        else
+        {
+            Debug.Log("ObjectivesManager not initialized");
+        }
+    }   
+
     public void DisableObjectivePanel()
     {
         if (objectivesManager != null)
         {
-            objectivesManager.disableObjectivePanel();
+            objectivesManager.ResetObjectives();
         }
     }
 

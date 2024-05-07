@@ -95,6 +95,7 @@ public class CutsceneController : MonoBehaviour
             case 3:
                 StartCoroutine(CutsceneThree());
                 break;
+
             default:
                 Debug.LogWarning("Cutscene ID not recognized.");
                 break;
@@ -123,16 +124,17 @@ public class CutsceneController : MonoBehaviour
 
     IEnumerator CutsceneThree()
     {
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.playButton);
         Debug.Log("Starting cutscene three, fading to black.");
         UIManager.Instance.ToggleCrosshair(false);
         yield return new WaitForSeconds(2); // Allow SFX to play and not overlap with fading
         FadeImage(ImageToFade, 1, 2, () =>
         {
+            StartCoroutine(FadeInOnSceneLoaded());
             Debug.Log("Fade to black complete, loading next scene.");
-            LoadNextScene("Endings");
         });
-    }
+    }   
+
+
 
     void LoadNextScene(string sceneName)
     {

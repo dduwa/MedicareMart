@@ -1,54 +1,45 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Customer : MonoBehaviour
+public class CustomerController : MonoBehaviour
 {
-    public Transform targetDestination;
+
+    public Transform[] waypoints; // Array of waypoints to follow
+    private int currentWaypointIndex = 0;
     private NavMeshAgent agent;
     private Animator animator;
-    public string[] possibleDialogues; // Array of possible dialogues
+
+
+
+    private bool readyToWalk = false;
+
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        ChooseModelAndDialogue();
-        MoveToTarget();
+        GoToNextWaypoint();
     }
 
-    void ChooseModelAndDialogue()
-    {
-        // Randomly enable one of the child model objects
-        int modelIndex = Random.Range(0, transform.childCount);
-        transform.GetChild(modelIndex).gameObject.SetActive(true);
 
-        // Select a random dialogue
-        string selectedDialogue = possibleDialogues[Random.Range(0, possibleDialogues.Length)];
-        Debug.Log("Selected Dialogue: " + selectedDialogue); // Implement dialogue display logic
-    }
-
-    void MoveToTarget()
+    void GoToNextWaypoint()
     {
-        if (targetDestination != null)
-        {
-            agent.destination = targetDestination.position;
-            animator.SetBool("isWalking", true);
-        }
+        if (waypoints.Length == 0)
+            return;
+
+        agent.destination = waypoints[currentWaypointIndex].position;
+        animator.SetBool("IsWalking", true);
+        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
     }
 
     void Update()
     {
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
-            animator.SetBool("isWalking", false);
-            // Trigger any dialogue or interaction here
+            animator.SetBool("IsWalking", false);
+            // Wait for a bit before moving to the next waypoint
+            Invoke("GoToNextWaypoint", 2.0f);
         }
-    }
-
-    public void SetDestination(Transform destination)
-    {
-        targetDestination = destination;
-        MoveToTarget();
     }
 
 }

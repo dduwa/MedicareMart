@@ -38,10 +38,16 @@ public class Interactable : MonoBehaviour
                 break;
             case InteractionType.ClockIn:
                 // Trigger gameplay for serving customers
-                DialogueController.Instance.ShowDialogue(new List<DialogueLine>(dialogueLines), this);
-                StartServingCustomers();
+                StartCoroutine(PlayClockInCutscene());
+                //DialogueController.Instance.ShowDialogue(new List<DialogueLine>(dialogueLines), this);
                 break;
         }
+    }
+    IEnumerator PlayClockInCutscene()
+    {
+        CutsceneController.Instance.StartCutscene(3);  // Assuming '3' is the ID for the Clock In cutscene
+        yield return new WaitForSeconds(5);  // Wait for the length of the cutscene
+        StartServingCustomers();
     }
 
     void ToggleDoor()

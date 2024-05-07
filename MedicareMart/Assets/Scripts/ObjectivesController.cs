@@ -7,9 +7,8 @@ public class ObjectivesController : MonoBehaviour
 {
     public GameObject objectivePanel; // Reference to the Objective Panel GameObject
     public Text objectiveTextTemplate;
-    public List<string> objectives = new List<string>();
+    private Dictionary<string, bool> objectives = new Dictionary<string, bool>();
 
-    // Start is called before the first frame update
     private void Start()
     {
         objectiveTextTemplate.gameObject.SetActive(false); // Start with the template disabled
@@ -17,30 +16,46 @@ public class ObjectivesController : MonoBehaviour
 
     public void AddObjective(string objective)
     {
-        // Clear any existing objective
-        ClearObjectives();
-
-        // Update the text of the template and activate it
-        objectiveTextTemplate.text = "Objective: " + objective;
-        objectiveTextTemplate.gameObject.SetActive(true);
+        // Add objective if not already present
+        if (!objectives.ContainsKey(objective))
+        {
+            objectives[objective] = false; // Mark as incomplete
+            UpdateObjectiveUI();
+        }
     }
 
-    private void ClearObjectives()
+    private void UpdateObjectiveUI()
     {
-        // Deactivate the current objective text
-        objectiveTextTemplate.gameObject.SetActive(false);
+        objectiveTextTemplate.gameObject.SetActive(false); // Hide the template before update
+
+        foreach (var objective in objectives)
+        {
+            objectiveTextTemplate.text = "Objective: " + objective.Key;
+            if (objective.Value) // If the objective is completed
+            {
+                objectiveTextTemplate.color = Color.green;
+            }
+            else
+            {
+                objectiveTextTemplate.color = Color.white;
+            }
+            objectiveTextTemplate.gameObject.SetActive(true);
+        }
     }
 
-    // reset the objectives list
+    public void MarkObjectiveComplete(string objective)
+    {
+        if (objectives.ContainsKey(objective))
+        {
+            objectives[objective] = true; // Mark as complete
+            UpdateObjectiveUI();
+        }
+    }
+
     public void ResetObjectives()
     {
         objectives.Clear();
+        objectiveTextTemplate.gameObject.SetActive(false);
     }
-
-    public void disableObjectivePanel()
-    {
-        objectivePanel.SetActive(false);
-    }
-
 
 }
