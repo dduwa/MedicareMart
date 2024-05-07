@@ -43,12 +43,7 @@ public class Interactable : MonoBehaviour
                 break;
         }
     }
-    IEnumerator PlayClockInCutscene()
-    {
-        CutsceneController.Instance.StartCutscene(3);  // Assuming '3' is the ID for the Clock In cutscene
-        yield return new WaitForSeconds(5);  // Wait for the length of the cutscene
-        StartServingCustomers();
-    }
+   
 
     void ToggleDoor()
     {
@@ -74,11 +69,22 @@ public class Interactable : MonoBehaviour
 
         renderer.material = highlight ? highlightMaterial : originalMaterial;
     }
+    IEnumerator PlayClockInCutscene()
+    {
+        CutsceneController.Instance.StartCutscene(3);  
+        yield return new WaitForSeconds(5);  // Wait for the length of the cutscene
+        UIManager.Instance.ToggleCrosshair(true);
+
+        StartServingCustomers();  // This method now triggers spawning
+    }
 
     void StartServingCustomers()
     {
         Debug.Log("Gameplay started: Serving customers");
+        Spawner.Instance.SpawnCustomer();  // Start spawning customers
+        SetInteractable(false);  // Disable further interactions if not needed
     }
+
 
 }
 

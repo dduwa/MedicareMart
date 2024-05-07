@@ -3,43 +3,45 @@ using UnityEngine.AI;
 
 public class CustomerController : MonoBehaviour
 {
-
-    public Transform[] waypoints; // Array of waypoints to follow
-    private int currentWaypointIndex = 0;
-    private NavMeshAgent agent;
     private Animator animator;
+    private bool isTalking = false;
 
-
-
-    private bool readyToWalk = false;
-
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
-        GoToNextWaypoint();
+        animator.Play("Idle");  // Ensures that "Idle" is the name of the idle state
     }
 
-
-    void GoToNextWaypoint()
+    public void StartTalking()
     {
-        if (waypoints.Length == 0)
-            return;
-
-        agent.destination = waypoints[currentWaypointIndex].position;
-        animator.SetBool("IsWalking", true);
-        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+        isTalking = true;
+        Debug.Log("Customer is talking");
     }
 
-    void Update()
+    public void EndTalkingAndMove()
     {
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        isTalking = false;
+        Debug.Log("Customer is done talking");
+
+        // Optionally, start a cutscene and then deactivate the customer
+        if (CutsceneController.Instance != null)
         {
-            animator.SetBool("IsWalking", false);
-            // Wait for a bit before moving to the next waypoint
-            Invoke("GoToNextWaypoint", 2.0f);
+            CutsceneController.Instance.StartCutscene(3);  // Assuming '3' is a valid cutscene ID
+            DeactivateCustomer();
+        }
+        else
+        {
+            Debug.LogError("CutsceneController instance not found!");
         }
     }
 
+    private void DeactivateCustomer()
+    {
+        Debug.Log("Deactivating customer.");
+        gameObject.SetActive(false);  // Deactivates the customer GameObject
+    }
 }

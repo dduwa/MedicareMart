@@ -4,6 +4,21 @@ using UnityEngine;
 
 public class CarController : MonoBehaviour
 {
+    static CarController instance;
+
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (AudioManager.Instance == null)
@@ -51,5 +66,7 @@ public class CarController : MonoBehaviour
         gameObject.SetActive(false);
         Debug.Log("Car GameObject has been disabled after delay.");
     }
+
+    
 
 }

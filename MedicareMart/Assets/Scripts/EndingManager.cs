@@ -33,11 +33,12 @@ public class EndingManager : MonoBehaviour
     {
         if (score == 0)
             return "Ending 1/3 - Went home because still sick.";
-        else if (score > 50)
-            return "Ending 2/3 - You died to the killer. ";
+        else if (score > 20)
+            return "Ending 2/3 - You died to the killer.";
         else
-            return "Ending 3/3 - You survived the killer. ";
+            return "Ending 4/3 - An unexpected outcome.";  // Default case to handle unexpected scores
     }
+
 
     public void ButtonHandlerQuit()
     {

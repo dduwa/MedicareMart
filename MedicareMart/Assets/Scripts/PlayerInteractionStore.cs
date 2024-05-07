@@ -17,14 +17,12 @@ public class PlayerInteractionStore : MonoBehaviour
     void Awake()
     {
         ToggleSelectedCursor(false);
-        
 
     }
 
     void Start()
     {
         UIManager.Instance.TriggerObjective("Speak to the manager");
-
     }
 
     void Update()

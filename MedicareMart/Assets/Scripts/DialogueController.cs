@@ -17,6 +17,7 @@ public class DialogueController : MonoBehaviour
 
     public FirstPersonController firstPersonController;
     public ManagerController managerController; // Reference to the ManagerController
+    public CustomerController customerController; // Reference to the CustomerController
     [SerializeField] private Camera playerCamera;
 
     private List<DialogueLine> currentDialogue = new List<DialogueLine>();
@@ -57,6 +58,11 @@ public class DialogueController : MonoBehaviour
         if (managerController != null)
         {
             managerController.StartTalking();
+        }
+
+        if (customerController != null)
+        {
+            customerController.StartTalking();
         }
     }
 
@@ -186,6 +192,12 @@ public class DialogueController : MonoBehaviour
         {
             managerController.StopTalking(); // End dialogue animations
             managerController.StandUp(); // Stand up after dialogue
+        }
+
+        if (customerController != null)
+        {
+
+            customerController.EndTalkingAndMove(); // End dialogue animations
         }
         UIManager.Instance.CompleteObjective("Speak to the manager");
         UIManager.Instance.TriggerObjective("Clock in when ready.");

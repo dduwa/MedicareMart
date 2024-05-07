@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);  // Ensures GameManager and its children are not destroyed.
+            DontDestroyOnLoad(gameObject);  
         }
         else
         {
@@ -106,6 +106,8 @@ public class GameManager : MonoBehaviour
             CurrentGameState = GameState.InStore;
             StartCoroutine(WaitForSoundToFinish("Store", AudioManager.Instance.playButton.length)); // Transition to the store
             Debug.Log("Transitioning from Bus to Store");
+            //UIManager.Instance.TriggerObjective("Speak to the manager");
+
         }
     }
 
@@ -125,9 +127,15 @@ public class GameManager : MonoBehaviour
             Debug.Log("Score is 0. Ending game.");
             EndGame();
         }
-        else
+        else if(finalScore > 20)
+        {
+            Debug.Log("Score is greater than 50. Ending game.");
+            EndGame();
+        }
+        else if(finalScore < 20)
         {
             Debug.Log("Score is not 0. Continuing game normally.");
+            EndGame();
         }   
     }
 
@@ -139,13 +147,23 @@ public class GameManager : MonoBehaviour
             Debug.Log("Score is 0 after dialogue. Ending game.");
             EndGame();
         }
-        else
+        else if(score > 20)
         {
-            Debug.Log("Dialogue ended with score " + score + ". Continuing game normally.");
+            Debug.Log("Score is greater than 50 after dialogue. Ending game.");
+            EndGame();
         }
+        else if(score == 12)
+        {
+            EndGame();
+        }else
+        {
+            Debug.Log("Score is not 0 after dialogue. Continuing game normally.");
+        }
+
+
     }
 
-    public void EndGame()
+        public void EndGame()
     {
         Debug.Log($"Attempting to end game from state: {CurrentGameState}");
         if (CurrentGameState == GameState.GameRunning)
@@ -208,25 +226,35 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         // Reset any game-specific data or states here
-        if (CurrentGameState != GameState.GameRunning)
+        if (CurrentGameState == GameState.GameRunning || CurrentGameState == GameState.GamePaused || CurrentGameState == GameState.GameEnded)
         {
+            // Ensure the game is not paused
+            if (IsGamePaused)
+            {
+                ResumeGame();
+            }
+
             ScoreManager.Instance.ResetScore();
 
-            CurrentGameState = GameState.MainMenu;
 
-            SceneManager.LoadSceneAsync("Menu");
+            SceneManager.LoadSceneAsync("Menu", LoadSceneMode.Single).completed += (AsyncOperation operation) =>
+            {
+                // Ensure the game state is correctly set once the scene is loaded
+                CurrentGameState = GameState.MainMenu;
+                Time.timeScale = 1f;
+                AudioListener.pause = false;
 
-            Time.timeScale = 1f;
-           AudioListener.pause = false;
-
-            Debug.Log("Game restarted to initial state");
-
+                Debug.Log("Game restarted to initial state");
+            };
         }
         else
         {
-            Debug.Log("Game is already running");
+            Debug.Log("Attempt to restart game denied: Game is in a state that does not allow restarting.");
         }
     }
+
+
+
 
     public void QuitGame()
     {

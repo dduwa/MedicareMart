@@ -4,25 +4,44 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject customerPrefab;
+    public static Spawner Instance { get; private set; }
+
+    public GameObject[] customerPrefabs; // Array to manage multiple customer types
     public Transform[] spawnPoints; // Array to manage multiple spawn points
+    public float spawnDelay = 60f; // Time between spawns in seconds
 
-    void Start()
+    private void Awake()
     {
-        InvokeRepeating("SpawnCustomer", 2.0f, 5.0f); // Starts spawning after 2 seconds, repeats every 5 seconds
-    }
-
-    void SpawnCustomer()
-    {
-        if (customerPrefab != null && spawnPoints.Length > 0)
+        if (Instance == null)
         {
-            Transform selectedSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            Instantiate(customerPrefab, selectedSpawnPoint.position, selectedSpawnPoint.rotation);
-            Debug.Log("Customer spawned at: " + selectedSpawnPoint.position);
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.LogError("Customer prefab or spawn points not set!");
+            Destroy(gameObject);
+        }
+    }
+
+    void Start()
+    {
+       // Invoke("SpawnCustomer", 2.0f); // Initial delay before the first spawn
+    }
+
+    public void SpawnCustomer()
+    {
+        if (customerPrefabs.Length > 0 && spawnPoints.Length > 0)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
+            Transform selectedSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            GameObject selectedCustomerPrefab = customerPrefabs[Random.Range(0, customerPrefabs.Length)];
+            Instantiate(selectedCustomerPrefab, selectedSpawnPoint.position, selectedSpawnPoint.rotation);
+            Debug.Log("Customer spawned at: " + selectedSpawnPoint.position);
+            Invoke("SpawnCustomer", spawnDelay);  // Continue spawning at defined intervals
+        }
+        else
+        {
+            Debug.LogError("Customer prefabs or spawn points not set!");
         }
     }
 }

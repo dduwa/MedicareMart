@@ -125,7 +125,7 @@ public class CutsceneController : MonoBehaviour
     IEnumerator CutsceneThree()
     {
         Debug.Log("Starting cutscene three, fading to black.");
-        UIManager.Instance.ToggleCrosshair(false);
+       // UIManager.Instance.ToggleCrosshair(false);
         yield return new WaitForSeconds(2); // Allow SFX to play and not overlap with fading
         FadeImage(ImageToFade, 1, 2, () =>
         {
